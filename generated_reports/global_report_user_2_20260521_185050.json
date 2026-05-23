@@ -1,0 +1,1935 @@
+{
+    "report_type": "GLOBAL_NETWORK_REPORT",
+    "generated_at": "2026-05-21 18:50:50",
+    "generated_by": {
+        "user_id": 2,
+        "username": "rawen"
+    },
+    "summary": {
+        "devices_count": 2,
+        "links_count": 0,
+        "vlans_count": 1,
+        "ip_plans_count": 2,
+        "acls_count": 0,
+        "logs_count": 123,
+        "notifications_count": 39,
+        "ai_scores_count": 40
+    },
+    "sections": {
+        "devices": [
+            {
+                "id": 1,
+                "hostname": "CORE_SW",
+                "ip": "192.168.1.1",
+                "type": "SITE_CORE",
+                "detected_at": "2026-05-21 01:51:20"
+            },
+            {
+                "id": 2,
+                "hostname": "CORE-SW",
+                "ip": "192.168.1.1",
+                "type": "SITE_CORE",
+                "detected_at": "2026-05-21 16:49:14"
+            }
+        ],
+        "links": [],
+        "vlans": [
+            {
+                "id": 1,
+                "vlan_id": 10,
+                "vlan_name": "service",
+                "device_id": 2,
+                "created_at": "2026-05-21 17:06:05"
+            }
+        ],
+        "ip_plans": [
+            {
+                "id": 1,
+                "department_id": 1,
+                "vlan_id": 10,
+                "subnet": "192.168.1.0/26",
+                "mask": "255.255.255.192",
+                "gateway": "192.168.1.1",
+                "broadcast": "192.168.1.63",
+                "created_at": "2026-05-21T16:50:35.863828"
+            },
+            {
+                "id": 2,
+                "department_id": 2,
+                "vlan_id": 10,
+                "subnet": "192.168.1.0/26",
+                "mask": "255.255.255.192",
+                "gateway": "192.168.1.1",
+                "broadcast": "192.168.1.63",
+                "created_at": "2026-05-21T17:06:27.842520"
+            }
+        ],
+        "acls": [],
+        "ai_scores": [
+            {
+                "id": 1,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 14:51:56"
+            },
+            {
+                "id": 2,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 14:51:56"
+            },
+            {
+                "id": 3,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 14:59:50"
+            },
+            {
+                "id": 4,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 14:59:50"
+            },
+            {
+                "id": 5,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:03:58"
+            },
+            {
+                "id": 6,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:03:58"
+            },
+            {
+                "id": 7,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:04:21"
+            },
+            {
+                "id": 8,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:04:21"
+            },
+            {
+                "id": 9,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:07:01"
+            },
+            {
+                "id": 10,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 15:07:01"
+            },
+            {
+                "id": 11,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:10:15"
+            },
+            {
+                "id": 12,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:10:15"
+            },
+            {
+                "id": 13,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:27:11"
+            },
+            {
+                "id": 14,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:27:11"
+            },
+            {
+                "id": 15,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:35:45"
+            },
+            {
+                "id": 16,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:35:45"
+            },
+            {
+                "id": 17,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:45:05"
+            },
+            {
+                "id": 18,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:45:05"
+            },
+            {
+                "id": 19,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:48:08"
+            },
+            {
+                "id": 20,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 15:48:08"
+            },
+            {
+                "id": 21,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:05:03"
+            },
+            {
+                "id": 22,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:05:03"
+            },
+            {
+                "id": 23,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:06:48"
+            },
+            {
+                "id": 24,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:06:48"
+            },
+            {
+                "id": 25,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:10:11"
+            },
+            {
+                "id": 26,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:10:11"
+            },
+            {
+                "id": 27,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 16:13:57"
+            },
+            {
+                "id": 28,
+                "user_id": 2,
+                "score": 92,
+                "created_at": "2026-05-21 16:13:57"
+            },
+            {
+                "id": 29,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:19:36"
+            },
+            {
+                "id": 30,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:19:36"
+            },
+            {
+                "id": 31,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:22:56"
+            },
+            {
+                "id": 32,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:22:56"
+            },
+            {
+                "id": 33,
+                "user_id": 1,
+                "score": 100,
+                "created_at": "2026-05-21 16:30:53"
+            },
+            {
+                "id": 34,
+                "user_id": 1,
+                "score": 100,
+                "created_at": "2026-05-21 16:30:53"
+            },
+            {
+                "id": 35,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:36:12"
+            },
+            {
+                "id": 36,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-21 16:36:12"
+            },
+            {
+                "id": 37,
+                "user_id": 2,
+                "score": 62,
+                "created_at": "2026-05-21 16:38:38"
+            },
+            {
+                "id": 38,
+                "user_id": 2,
+                "score": 62,
+                "created_at": "2026-05-21 16:38:38"
+            },
+            {
+                "id": 39,
+                "user_id": 2,
+                "score": 76,
+                "created_at": "2026-05-21 16:41:03"
+            },
+            {
+                "id": 40,
+                "user_id": 2,
+                "score": 76,
+                "created_at": "2026-05-21 16:41:03"
+            }
+        ],
+        "logs": [
+            {
+                "id": 1,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:18:30"
+            },
+            {
+                "id": 2,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:23:17"
+            },
+            {
+                "id": 3,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:27:46"
+            },
+            {
+                "id": 4,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:35:50"
+            },
+            {
+                "id": 5,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:35:52"
+            },
+            {
+                "id": 6,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:35:54"
+            },
+            {
+                "id": 7,
+                "action": "LOGIN_FAILED",
+                "device_id": null,
+                "user_id": null,
+                "module": "AUTH",
+                "status": "FAILED",
+                "extra": "{\"username\": \"rawen\", \"reason\": \"Invalid username or password\"}",
+                "created_at": "2026-05-21 01:43:45"
+            },
+            {
+                "id": 8,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 01:44:07"
+            },
+            {
+                "id": 9,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 01:44:07"
+            },
+            {
+                "id": 10,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 01:44:07"
+            },
+            {
+                "id": 11,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 0}",
+                "created_at": "2026-05-21 01:44:08"
+            },
+            {
+                "id": 12,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-21 01:44:08"
+            },
+            {
+                "id": 13,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 6}",
+                "created_at": "2026-05-21 01:44:08"
+            },
+            {
+                "id": 14,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 6}",
+                "created_at": "2026-05-21 01:44:08"
+            },
+            {
+                "id": 15,
+                "action": "CREATE_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"created_username\": \"rawen\", \"created_email\": \"rawen.khadhar@gmail.com\", \"created_role\": \"admin\", \"created_by\": \"admin\"}",
+                "created_at": "2026-05-21 01:45:18"
+            },
+            {
+                "id": 16,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 2}",
+                "created_at": "2026-05-21 01:45:20"
+            },
+            {
+                "id": 17,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 01:45:55"
+            },
+            {
+                "id": 18,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 19,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 20,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 0}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 21,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 2}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 22,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 23,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 01:45:56"
+            },
+            {
+                "id": 24,
+                "action": "CREATE_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"created_username\": \"louay\", \"created_email\": \"louay@gmail.com\", \"created_role\": \"engineer\", \"created_by\": \"rawen\"}",
+                "created_at": "2026-05-21 01:47:44"
+            },
+            {
+                "id": 25,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 3}",
+                "created_at": "2026-05-21 01:47:46"
+            },
+            {
+                "id": 26,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"role\": \"engineer\"}",
+                "created_at": "2026-05-21 01:48:05"
+            },
+            {
+                "id": 27,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"role\": \"engineer\", \"permissions_count\": 11}",
+                "created_at": "2026-05-21 01:48:05"
+            },
+            {
+                "id": 28,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 01:48:06"
+            },
+            {
+                "id": 29,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 3,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"count\": 0}",
+                "created_at": "2026-05-21 01:48:06"
+            },
+            {
+                "id": 30,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-21 01:48:17"
+            },
+            {
+                "id": 31,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-21 01:48:17"
+            },
+            {
+                "id": 32,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 33,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 34,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 35,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 0}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 36,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 3}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 37,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 38,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 01:49:12"
+            },
+            {
+                "id": 39,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"role\": \"engineer\"}",
+                "created_at": "2026-05-21 01:49:56"
+            },
+            {
+                "id": 40,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"role\": \"engineer\", \"permissions_count\": 11}",
+                "created_at": "2026-05-21 01:49:56"
+            },
+            {
+                "id": 41,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 01:49:56"
+            },
+            {
+                "id": 42,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 3,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"count\": 0}",
+                "created_at": "2026-05-21 01:49:57"
+            },
+            {
+                "id": 43,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-21 01:50:14"
+            },
+            {
+                "id": 44,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 3,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-21 01:50:15"
+            },
+            {
+                "id": 45,
+                "action": "DISCOVER_SITE",
+                "device_id": null,
+                "user_id": 3,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"tunis\", \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 0, \"report_id\": 1, \"file_path\": \"reports/discovery_report_tunis_20260521_015120.json\", \"errors\": []}",
+                "created_at": "2026-05-21 01:51:20"
+            },
+            {
+                "id": 46,
+                "action": "DISCOVER_SITE_SUCCESS",
+                "device_id": null,
+                "user_id": 3,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"tunis\", \"device_count\": 1, \"link_count\": 0, \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 0, \"report_id\": 1, \"architecture_report_id\": 1, \"file_path\": \"reports/discovery_report_tunis_20260521_015120.json\"}",
+                "created_at": "2026-05-21 01:51:26"
+            },
+            {
+                "id": 47,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 3,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"louay\", \"count\": 1}",
+                "created_at": "2026-05-21 01:51:26"
+            },
+            {
+                "id": 48,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 13:16:34"
+            },
+            {
+                "id": 49,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 13:16:34"
+            },
+            {
+                "id": 50,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"device_count\": 1, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 13:16:35"
+            },
+            {
+                "id": 51,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 0}",
+                "created_at": "2026-05-21 13:16:35"
+            },
+            {
+                "id": 52,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 3}",
+                "created_at": "2026-05-21 13:16:35"
+            },
+            {
+                "id": 53,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 13:16:35"
+            },
+            {
+                "id": 54,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 13:16:36"
+            },
+            {
+                "id": 55,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 16:48:37"
+            },
+            {
+                "id": 56,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 16:48:37"
+            },
+            {
+                "id": 57,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"device_count\": 1, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-21 16:48:37"
+            },
+            {
+                "id": 58,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 0}",
+                "created_at": "2026-05-21 16:48:38"
+            },
+            {
+                "id": 59,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 3}",
+                "created_at": "2026-05-21 16:48:38"
+            },
+            {
+                "id": 60,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 16:48:38"
+            },
+            {
+                "id": 61,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 16:48:38"
+            },
+            {
+                "id": 62,
+                "action": "DISCOVER_SITE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"TUNIS\", \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 0, \"report_id\": 2, \"file_path\": \"reports/discovery_report_TUNIS_20260521_164914.json\", \"errors\": []}",
+                "created_at": "2026-05-21 16:49:14"
+            },
+            {
+                "id": 63,
+                "action": "DISCOVER_SITE_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"TUNIS\", \"device_count\": 1, \"link_count\": 0, \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 0, \"report_id\": 2, \"architecture_report_id\": 2, \"file_path\": \"reports/discovery_report_TUNIS_20260521_164914.json\"}",
+                "created_at": "2026-05-21 16:49:16"
+            },
+            {
+                "id": 64,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 1}",
+                "created_at": "2026-05-21 16:49:16"
+            },
+            {
+                "id": 65,
+                "action": "GENERATE_VLAN",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLAN",
+                "status": "success",
+                "extra": "{\"created\": 1, \"skipped\": 0, \"saved_vlans\": 1, \"db_errors\": [], \"errors\": []}",
+                "created_at": "2026-05-21 16:49:49"
+            },
+            {
+                "id": 66,
+                "action": "VALIDATE_VLSM",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"warnings\": 0}",
+                "created_at": "2026-05-21 16:50:35"
+            },
+            {
+                "id": 67,
+                "action": "GENERATE_VLSM",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"base_network\": \"192.168.1.0/24\", \"requested_zone_count\": 1, \"planned_zone_count\": 1, \"skipped_zone_count\": 0, \"error_count\": 0, \"warning_count\": 0}",
+                "created_at": "2026-05-21 16:50:35"
+            },
+            {
+                "id": 68,
+                "action": "RENDER_NETWORK_CONFIG_FINAL",
+                "device_id": null,
+                "user_id": 2,
+                "module": "GENERATOR",
+                "status": "success",
+                "extra": "{\"device_count\": 1, \"file_count\": 1, \"used_final_plan\": true}",
+                "created_at": "2026-05-21 16:50:55"
+            },
+            {
+                "id": 69,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 16:51:56"
+            },
+            {
+                "id": 70,
+                "action": "DEPLOY_NETWORK_CONFIGS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DEPLOYMENT",
+                "status": "failed",
+                "extra": "{\"device_count\": 1, \"return_code\": 2}",
+                "created_at": "2026-05-21 16:56:40"
+            },
+            {
+                "id": 71,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 16:59:50"
+            },
+            {
+                "id": 72,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 16:59:51"
+            },
+            {
+                "id": 73,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 16:59:51"
+            },
+            {
+                "id": 74,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:03:58"
+            },
+            {
+                "id": 75,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:03:58"
+            },
+            {
+                "id": 76,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:03:58"
+            },
+            {
+                "id": 77,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:04:21"
+            },
+            {
+                "id": 78,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:04:21"
+            },
+            {
+                "id": 79,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:04:21"
+            },
+            {
+                "id": 80,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\"}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 81,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"role\": \"admin\", \"permissions_count\": 15}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 82,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"device_count\": 2, \"vlan_count\": 1, \"ai_score\": 92, \"unread_notifications\": 10}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 83,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"count\": 1}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 84,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 2,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"rawen\", \"count\": 3}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 85,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:05:07"
+            },
+            {
+                "id": 86,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 17:05:08"
+            },
+            {
+                "id": 87,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 17:05:15"
+            },
+            {
+                "id": 88,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 17:05:31"
+            },
+            {
+                "id": 89,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 17:05:33"
+            },
+            {
+                "id": 90,
+                "action": "GENERATE_VLAN",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLAN",
+                "status": "success",
+                "extra": "{\"created\": 1, \"skipped\": 0, \"saved_vlans\": 1, \"db_errors\": [], \"errors\": []}",
+                "created_at": "2026-05-21 17:06:05"
+            },
+            {
+                "id": 91,
+                "action": "VALIDATE_VLSM",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"warnings\": 0}",
+                "created_at": "2026-05-21 17:06:27"
+            },
+            {
+                "id": 92,
+                "action": "GENERATE_VLSM",
+                "device_id": null,
+                "user_id": 2,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"base_network\": \"192.168.1.0/24\", \"requested_zone_count\": 1, \"planned_zone_count\": 1, \"skipped_zone_count\": 0, \"error_count\": 0, \"warning_count\": 0}",
+                "created_at": "2026-05-21 17:06:27"
+            },
+            {
+                "id": 93,
+                "action": "RENDER_NETWORK_CONFIG_FINAL",
+                "device_id": null,
+                "user_id": 2,
+                "module": "GENERATOR",
+                "status": "success",
+                "extra": "{\"device_count\": 1, \"file_count\": 1, \"used_final_plan\": true}",
+                "created_at": "2026-05-21 17:06:41"
+            },
+            {
+                "id": 94,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:07:01"
+            },
+            {
+                "id": 95,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:10:15"
+            },
+            {
+                "id": 96,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:27:11"
+            },
+            {
+                "id": 97,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:35:45"
+            },
+            {
+                "id": 98,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:45:05"
+            },
+            {
+                "id": 99,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 17:48:08"
+            },
+            {
+                "id": 100,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:05:03"
+            },
+            {
+                "id": 101,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:06:48"
+            },
+            {
+                "id": 102,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:10:11"
+            },
+            {
+                "id": 103,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:13:57"
+            },
+            {
+                "id": 104,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 18:13:57"
+            },
+            {
+                "id": 105,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 18:13:57"
+            },
+            {
+                "id": 106,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:19:36"
+            },
+            {
+                "id": 107,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:22:56"
+            },
+            {
+                "id": 108,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 100, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:30:53"
+            },
+            {
+                "id": 109,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:36:12"
+            },
+            {
+                "id": 110,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 62, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:38:38"
+            },
+            {
+                "id": 111,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 18:38:38"
+            },
+            {
+                "id": 112,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 18:38:38"
+            },
+            {
+                "id": 113,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 76, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-21 18:41:03"
+            },
+            {
+                "id": 114,
+                "action": "APPLY_AI_FIX",
+                "device_id": null,
+                "user_id": null,
+                "module": "AI_SECURITY",
+                "status": "APPLIED",
+                "extra": "{\"fix_count\": 2, \"commands\": [\"configure terminal\", \"vlan 10\", \" name service\", \"exit\", \"interface vlan 10\", \" ip address 192.168.1.1 255.255.255.192\", \" no shutdown\", \"exit\", \"ip routing\", \"end\", \"write memory\"]}",
+                "created_at": "2026-05-21 18:41:48"
+            },
+            {
+                "id": 115,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 2,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 83}",
+                "created_at": "2026-05-21 18:42:08"
+            },
+            {
+                "id": 116,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 18:44:42"
+            },
+            {
+                "id": 117,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 18:44:45"
+            },
+            {
+                "id": 118,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 18:44:45"
+            },
+            {
+                "id": 119,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 18:44:46"
+            },
+            {
+                "id": 120,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 2,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"rawen\", \"report_id\": 2, \"site_name\": \"TUNIS\"}",
+                "created_at": "2026-05-21 18:44:46"
+            },
+            {
+                "id": 121,
+                "action": "EXPORT_REPORT_PDF",
+                "device_id": null,
+                "user_id": 2,
+                "module": "Reports",
+                "status": "SUCCESS",
+                "extra": "\"{\\\"report_id\\\": 2, \\\"pdf_path\\\": \\\"generated_reports/discovery_report_TUNIS\\\"}\"",
+                "created_at": "2026-05-21 18:46:24"
+            },
+            {
+                "id": 122,
+                "action": "EXPORT_REPORT_PDF",
+                "device_id": null,
+                "user_id": 2,
+                "module": "Reports",
+                "status": "SUCCESS",
+                "extra": "\"{\\\"report_id\\\": 2, \\\"pdf_path\\\": \\\"generated_reports/discovery_report_TUNIS\\\"}\"",
+                "created_at": "2026-05-21 18:47:56"
+            },
+            {
+                "id": 123,
+                "action": "EXPORT_REPORT_PDF",
+                "device_id": null,
+                "user_id": 2,
+                "module": "Reports",
+                "status": "SUCCESS",
+                "extra": "\"{\\\"report_id\\\": 2, \\\"pdf_path\\\": \\\"generated_reports/discovery_report_TUNIS\\\"}\"",
+                "created_at": "2026-05-21 18:49:48"
+            }
+        ],
+        "notifications": [
+            {
+                "id": 1,
+                "user_id": 3,
+                "message": "Découverte terminée pour tunis.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Découverte réseau terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 2,
+                "user_id": 3,
+                "message": "CORE_SW est non joignable.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Équipement non joignable",
+                "email_sent": 1
+            },
+            {
+                "id": 3,
+                "user_id": 2,
+                "message": "Découverte terminée pour TUNIS.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Découverte réseau terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 4,
+                "user_id": 2,
+                "message": "CORE-SW est non joignable.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Équipement non joignable",
+                "email_sent": 1
+            },
+            {
+                "id": 5,
+                "user_id": 2,
+                "message": "1 VLAN(s) généré(s), 0 ignoré(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Génération VLAN terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 6,
+                "user_id": 2,
+                "message": "1 sous-réseau(x) planifié(s) et sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Plan VLSM généré",
+                "email_sent": 0
+            },
+            {
+                "id": 7,
+                "user_id": 2,
+                "message": "1 configuration(s) générée(s), 1 fichier(s) sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Configuration réseau générée",
+                "email_sent": 0
+            },
+            {
+                "id": 8,
+                "user_id": 2,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T16:51:56.632636",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 9,
+                "user_id": 2,
+                "message": "Déploiement réseau terminé avec statut: failed.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Déploiement réseau échoué",
+                "email_sent": 1
+            },
+            {
+                "id": 10,
+                "user_id": 2,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T16:59:50.958484",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 11,
+                "user_id": 2,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:03:58.122849",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 12,
+                "user_id": 2,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:04:21.701084",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 13,
+                "user_id": 2,
+                "message": "1 VLAN(s) généré(s), 0 ignoré(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Génération VLAN terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 14,
+                "user_id": 2,
+                "message": "1 sous-réseau(x) planifié(s) et sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Plan VLSM généré",
+                "email_sent": 0
+            },
+            {
+                "id": 15,
+                "user_id": 2,
+                "message": "1 configuration(s) générée(s), 1 fichier(s) sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Configuration réseau générée",
+                "email_sent": 0
+            },
+            {
+                "id": 16,
+                "user_id": 2,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:07:01.102744",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 17,
+                "user_id": 1,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:10:15.233274",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 18,
+                "user_id": 1,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:27:11.885544",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 19,
+                "user_id": 1,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:35:45.401944",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 20,
+                "user_id": 1,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:45:05.240121",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 21,
+                "user_id": 1,
+                "message": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Your API key was reported as leaked. Please use another API key.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}\n",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T17:48:08.560885",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 22,
+                "user_id": 1,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:05:03.056227",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 23,
+                "user_id": 1,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:06:48.797725",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 24,
+                "user_id": 1,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:10:11.244727",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 25,
+                "user_id": 2,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:13:57.110786",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 26,
+                "user_id": 1,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:19:36.149218",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 27,
+                "user_id": 1,
+                "message": "All API keys exhausted or Gemini unavailable",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:22:56.183708",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 28,
+                "user_id": 1,
+                "message": "The discovery report is empty, lacking any network topology, device configurations, or contextual information. This prevents the analysis of critical security aspects such as VLAN consistency, subnet conflicts, ACL vulnerabilities, missing segmentation, and other topology risks. Without this data, a comprehensive security assessment cannot be performed.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:36:12.633835",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 29,
+                "user_id": 2,
+                "message": "The core switch (CORE-SW) is currently unreachable. This prevents any configuration verification, active monitoring, management, or the application of security fixes. All other discovered information might be stale or incomplete.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.079195",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 30,
+                "user_id": 2,
+                "message": "The network lacks dedicated routing devices and firewalls. A Cisco 2960 (Layer 2 switch) is identified as the potential gateway for the 'security' zone (192.168.1.0/26). A Layer 2 switch is highly unsuitable for a core network role, especially for a zone designated for security, as it lacks advanced security features (stateful inspection, IPS/IDS), performance for routing, and robust policy enforcement capabilities of a dedicated firewall or Layer 3 router.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.099207",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 31,
+                "user_id": 2,
+                "message": "Only one VLAN (VLAN 10) and one subnet (192.168.1.0/26) are defined, both associated with a 'security' zone. This indicates a severe lack of network segmentation. Without further segmentation (e.g., for management, user, guest, server, DMZ), a compromise in one area could easily spread across the entire network, violating the principle of least privilege and increasing the attack surface.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.118786",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 32,
+                "user_id": 2,
+                "message": "VLAN 10 is named 'service' but is assigned to the 'security' zone. This inconsistency can lead to confusion, misconfiguration, and errors when applying security policies or troubleshooting.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.140266",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 33,
+                "user_id": 2,
+                "message": "The subnet 192.168.1.0/26 has a planned gateway of 192.168.1.1 (CORE-SW's IP). However, no SVI (Switch Virtual Interface) for VLAN 10 is discovered on CORE-SW. This indicates the gateway functionality is either not configured or not reachable, preventing hosts in this subnet from communicating outside their VLAN.",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.159062",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 34,
+                "user_id": 2,
+                "message": "No Access Control Lists (ACLs) were discovered on CORE-SW. Given the high security priority, the complete absence of ACLs means there are no granular traffic filtering rules in place to restrict communication between devices or to/from the network, leaving it highly vulnerable to unauthorized access, lateral movement, and various network attacks.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:38:38.181689",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 35,
+                "user_id": 2,
+                "message": "The core switch 'CORE-SW' is currently unreachable, preventing any on-device configuration validation (VLANs, SVIs, Trunks, etc.) and posing a significant operational and security risk. This unreachability is the root cause for most unverified configurations and prevents a complete VLAN/VLSM validation.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:41:03.138260",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 36,
+                "user_id": 2,
+                "message": "The Cisco 2960 (CORE-SW) is primarily a Layer 2 switch, but it is designated as the gateway (192.168.1.1) for the 192.168.1.0/26 subnet (associated with VLAN 10). For it to function as a gateway for client devices and perform inter-VLAN routing, it must be a Layer 3 switch with 'ip routing' enabled and an SVI ('interface vlan 10') configured with the gateway IP. The current report shows no SVIs configured (due to unreachability), and the device model typically lacks full L3 routing capabilities.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:41:03.154818",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 37,
+                "user_id": 2,
+                "message": "No trunk configurations could be verified on CORE-SW due to its unreachability. Trunks are essential for VLAN propagation across the network and their absence or misconfiguration can lead to significant connectivity issues and segmentation failures.",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:41:03.174461",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 38,
+                "user_id": 2,
+                "message": "VLAN 10 is named 'service' but is assigned to the 'security' zone in the network context, while its associated subnet is in the 'service' zone. This creates a minor inconsistency in logical grouping and naming conventions, which can lead to confusion in network management and security policy application.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:41:03.197901",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 39,
+                "user_id": 2,
+                "message": "The discovery summary reports 'vlan_count: 0' and 'subnet_count: 0', which contradicts the presence of VLAN 10 and subnet 192.168.1.0/26 in the 'network_context' section. Additionally, the device 'CORE-SW' is marked as unreachable but has 'error: null'. This indicates an incomplete or inconsistent discovery process, potentially leading to inaccurate network understanding.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": "2026-05-21T18:41:03.219940",
+                "title": "Notification",
+                "email_sent": 0
+            }
+        ]
+    }
+}
