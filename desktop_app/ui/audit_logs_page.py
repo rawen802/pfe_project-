@@ -18,7 +18,35 @@ class AuditLogsPage(QWidget):
 
         self.setup_ui()
         self.apply_styles()
-        self.load_logs()
+        self.apply_rbac_ui()
+
+        if self.can_view_audit_logs():
+            self.load_logs()
+        else:
+            self.show_restricted_access()
+
+    def can_view_audit_logs(self):
+        permissions = self.user_data.get("permissions", [])
+        role = str(self.user_data.get("role", "")).lower()
+
+        return role == "admin" or "view_audit_logs" in permissions
+
+    def apply_rbac_ui(self):
+        if not self.can_view_audit_logs():
+            self.search_input.hide()
+            self.status_filter.hide()
+            self.module_filter.hide()
+            self.refresh_btn.hide()
+            self.table.hide()
+
+    def show_restricted_access(self):
+        self.logs = []
+        self.table.setRowCount(0)
+        self.access_label.setText("Accès restreint selon vos permissions")
+        self.access_label.show()
+
+    def clear_restricted_access(self):
+        self.access_label.hide()
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
@@ -136,8 +164,14 @@ class AuditLogsPage(QWidget):
 
         self.table.verticalHeader().setVisible(False)
 
+        self.access_label = QLabel("")
+        self.access_label.setObjectName("accessLabel")
+        self.access_label.setAlignment(Qt.AlignCenter)
+        self.access_label.hide()
+
         main_layout.addWidget(header)
         main_layout.addWidget(filters)
+        main_layout.addWidget(self.access_label)
         main_layout.addWidget(self.table)
 
         # ================= SIGNALS =================
@@ -159,6 +193,12 @@ class AuditLogsPage(QWidget):
     # LOAD LOGS
     # ==================================================
     def load_logs(self):
+        if not self.can_view_audit_logs():
+            self.show_restricted_access()
+            return
+
+        self.clear_restricted_access()
+
         if not self.api:
             QMessageBox.warning(
                 self,
@@ -371,6 +411,16 @@ class AuditLogsPage(QWidget):
             QLabel#subtitle {
                 font-size: 14px;
                 color: #9fb0c8;
+            }
+
+            QLabel#accessLabel {
+                background-color: #0d1a2d;
+                border: 1px solid #183252;
+                border-radius: 14px;
+                padding: 28px;
+                color: #9fb0c8;
+                font-size: 18px;
+                font-weight: bold;
             }
 
             QFrame#filterCard {

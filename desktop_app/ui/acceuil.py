@@ -281,39 +281,53 @@ class HomePage(QWidget):
     def feature_card(self, title, description, icon, accent="blue"):
         frame = QFrame()
         frame.setObjectName(f"featureCard_{accent}")
-        frame.setMinimumHeight(165)
-        frame.setMaximumHeight(185)
+
+    # hauteur augmentée
+        frame.setMinimumHeight(240)
+        frame.setMaximumHeight(260)
+
         frame.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         layout = QVBoxLayout(frame)
-        layout.setContentsMargins(18, 14, 18, 14)
-        layout.setSpacing(10)
+
+    # espacements améliorés
+        layout.setContentsMargins(20, 18, 20, 18)
+        layout.setSpacing(14)
 
         icon_box = QFrame()
         icon_box.setObjectName(f"featureIcon_{accent}")
-        icon_box.setFixedSize(48, 48)
+        icon_box.setFixedSize(58, 58)
 
         icon_layout = QVBoxLayout(icon_box)
         icon_layout.setContentsMargins(0, 0, 0, 0)
-        icon_layout.addWidget(self.icon_label(icon, 24), 0, Qt.AlignCenter)
+
+        icon_layout.addWidget(
+            self.icon_label(icon, 28),
+            0,
+            Qt.AlignCenter
+        )
 
         title_label = QLabel(title)
         title_label.setObjectName("featureTitle")
+
+    # correction texte coupé
         title_label.setWordWrap(True)
         title_label.setAlignment(Qt.AlignCenter)
 
         desc_label = QLabel(description)
         desc_label.setObjectName("featureDesc")
+
+    # correction description
         desc_label.setWordWrap(True)
         desc_label.setAlignment(Qt.AlignCenter)
 
         layout.addWidget(icon_box, 0, Qt.AlignCenter)
-        layout.addWidget(title_label, 0, Qt.AlignCenter)
-        layout.addWidget(desc_label, 0, Qt.AlignCenter)
+        layout.addWidget(title_label)
+        layout.addWidget(desc_label)
+
         layout.addStretch()
 
         return frame
-
     def workflow_step(self, title, desc, icon):
         frame = QFrame()
         frame.setObjectName("workflowStep")
@@ -499,14 +513,17 @@ class HomePage(QWidget):
 
             QLabel#featureTitle {
                 color: white;
-                font-size: 13px;
+                font-size: 17px;
                 font-weight: 900;
+                padding-top: 4px
             }
 
             QLabel#featureDesc {
                 color: #B9CBE7;
-                font-size: 11px;
-                line-height: 1.35;
+                font-size: 13px;
+                line-height: 1.5;
+                padding-left: 6px;
+                padding-right: 6px;
             }
 
             QFrame#workflowCard {

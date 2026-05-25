@@ -5,7 +5,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame,
     QListWidget, QListWidgetItem, QPushButton,
-    QGraphicsOpacityEffect, QLineEdit, QScrollArea,
+    QGraphicsOpacityEffect, QLineEdit, QScrollArea, QMessageBox
 )
 
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
@@ -137,13 +137,14 @@ class KPIBox(QFrame):
 
 
 class DashboardPage(QWidget):
-    def __init__(self, user_info=None, api_client=None):
+    def __init__(self, user_info=None, api_client=None, main_window=None):
         super().__init__()
 
         self.user_info = user_info or {}
         self.user_id = self.user_info.get("id", 1)
         self.user_role = self.user_info.get("role", "viewer")
         self.token = self.user_info.get("token")
+        self.main_window = main_window
 
         self.api_client = api_client or ApiClient()
         self.api_client.token = self.token
@@ -151,6 +152,7 @@ class DashboardPage(QWidget):
         self._animations = []
 
         self.setup_ui()
+        self.apply_rbac_ui()
         self.apply_styles()
 
         try:
@@ -159,6 +161,79 @@ class DashboardPage(QWidget):
             print("Erreur dashboard data:", e)
 
         self.start_animations()
+
+    def apply_rbac_ui(self):
+        """
+        Rend le dashboard dynamique selon le rôle utilisateur.
+
+        Règles principales :
+        - admin : voit tout
+        - engineer : actions techniques seulement, pas santé réseau / activité IA / score IA
+        - analyst : analyse et consultation, pas découverte / VLAN / VLSM / déploiement
+        - viewer : consultation simple uniquement
+        """
+        role = str(self.user_role or self.user_info.get("role", "viewer")).lower()
+        permissions = self.user_info.get("permissions", []) or []
+
+        # Par défaut, la carte utilisateurs est réservée à l'admin.
+        if role != "admin":
+            self.kpi_users.hide()
+
+        # Engineer : il gère la partie technique, pas la santé/analyse sécurité.
+        if role == "engineer":
+            self.kpi_score.hide()
+            self.health_card.hide()
+            self.ai_card.hide()
+            self.btn_ai.hide()
+            self.btn_monitor.hide()
+
+        # Analyst : il consulte/analyse, mais ne fait pas la découverte ni le déploiement.
+        if role == "analyst":
+            self.btn_discover.hide()
+            self.btn_vlan.hide()
+            self.btn_vlsm.hide()
+            self.btn_deploy.hide()
+
+        # Viewer : lecture simple seulement.
+        if role == "viewer":
+            self.kpi_score.hide()
+            self.health_card.hide()
+            self.ai_card.hide()
+            self.btn_discover.hide()
+            self.btn_vlan.hide()
+            self.btn_vlsm.hide()
+            self.btn_acl.hide()
+            self.btn_ai.hide()
+            self.btn_deploy.hide()
+            self.btn_report.hide()
+            self.btn_monitor.hide()
+
+        # Sécurité supplémentaire par permissions.
+        # Même si le rôle autorise, on cache si la permission n'existe pas.
+        if "discover_site" not in permissions:
+            self.btn_discover.hide()
+
+        if "create_vlan" not in permissions:
+            self.btn_vlan.hide()
+
+        if "generate_vlsm" not in permissions:
+            self.btn_vlsm.hide()
+
+        if "generate_acl" not in permissions:
+            self.btn_acl.hide()
+
+        if "validate_ai" not in permissions:
+            self.btn_ai.hide()
+
+        if "deploy_configs" not in permissions:
+            self.btn_deploy.hide()
+
+        if "generate_reports" not in permissions:
+            self.btn_report.hide()
+
+        if "view_analytics" not in permissions and "view_security_analytics" not in permissions:
+            self.btn_monitor.hide()
+
 
     def setup_ui(self):
         page_layout = QVBoxLayout(self)
@@ -395,14 +470,7 @@ class DashboardPage(QWidget):
 
         root.addLayout(bottom_row)
 
-        self.btn_discover.clicked.connect(lambda: print("Discovery"))
-        self.btn_vlan.clicked.connect(lambda: print("VLAN"))
-        self.btn_vlsm.clicked.connect(lambda: print("VLSM"))
-        self.btn_acl.clicked.connect(lambda: print("ACL"))
-        self.btn_ai.clicked.connect(lambda: print("AI Validate"))
-        self.btn_deploy.clicked.connect(lambda: print("Deploy"))
-        self.btn_report.clicked.connect(lambda: print("Report"))
-        self.btn_monitor.clicked.connect(lambda: print("Monitor"))
+        self.connect_action_buttons()
 
         self.animated_cards = [
             hero,
@@ -445,6 +513,237 @@ class DashboardPage(QWidget):
         btn.setIcon(QIcon(icon_path(icon_file)))
         btn.setIconSize(ICON_SIZE)
         return btn
+
+    def connect_action_buttons(self):
+        """
+        Connecte les boutons du dashboard aux vraies pages de l'application.
+
+        Cette méthode remplace les anciens :
+            print("Discovery"), print("VLAN"), ...
+
+        Elle appelle navigate_to_page() avec plusieurs alias possibles pour
+        rester compatible avec ton MainWindow même si les pages ont des noms
+        légèrement différents.
+        """
+        self.btn_discover.clicked.connect(
+            lambda: self.navigate_to_page(
+                "Discovery",
+                ["discovery", "discover", "network_discovery", "DiscoveryPage", "Découverte"]
+            )
+        )
+
+        self.btn_vlan.clicked.connect(
+            lambda: self.navigate_to_page(
+                "VLAN/VLSM",
+                ["vlan_vlsm", "vlan", "vlans", "VlanVlsmPage", "VLANPage"]
+            )
+        )
+
+        self.btn_vlsm.clicked.connect(
+            lambda: self.navigate_to_page(
+                "VLAN/VLSM",
+                ["vlan_vlsm", "vlsm", "VlanVlsmPage", "VLSMPage"]
+            )
+        )
+
+        self.btn_acl.clicked.connect(
+            lambda: self.navigate_to_page(
+                "ACL",
+                ["acl", "security_acl", "ACLPage", "AclPage"]
+            )
+        )
+
+        self.btn_ai.clicked.connect(
+            lambda: self.navigate_to_page(
+                "Analyse IA",
+                ["ai", "ai_analysis", "ai_validate", "AIPage", "AiPage"]
+            )
+        )
+
+        self.btn_deploy.clicked.connect(
+            lambda: self.navigate_to_page(
+                "Déploiement",
+                ["deploy", "deployment", "DeployPage", "DeploymentPage"]
+            )
+        )
+
+        self.btn_report.clicked.connect(
+            lambda: self.navigate_to_page(
+                "Rapports",
+                ["reports", "report", "ReportsPage", "ReportPage"]
+            )
+        )
+
+        self.btn_monitor.clicked.connect(
+            lambda: self.navigate_to_page(
+                "Supervision",
+                ["security_analytics", "analytics", "monitoring", "supervision", "SecurityAnalyticsPage"]
+            )
+        )
+
+    def get_main_window(self):
+        """
+        Retourne la fenêtre principale.
+
+        Priorité :
+        1. self.main_window si elle est passée au constructeur
+        2. self.window() si DashboardPage est déjà attachée à MainWindow
+        """
+        if self.main_window is not None:
+            return self.main_window
+
+        try:
+            window = self.window()
+            if window is not self:
+                return window
+        except Exception:
+            pass
+
+        return None
+
+    def navigate_to_page(self, display_name, aliases):
+        """
+        Navigation robuste vers une page.
+
+        Compatible avec plusieurs architectures de MainWindow :
+        - show_page("page_name")
+        - navigate_to_page("page_name")
+        - change_page("page_name")
+        - set_current_page("page_name")
+        - open_page("page_name")
+        - QStackedWidget + dictionnaire self.pages
+        - QStackedWidget + attributs de pages
+        """
+        main_window = self.get_main_window()
+
+        if main_window is None:
+            QMessageBox.information(
+                self,
+                "Navigation",
+                f"Impossible d'ouvrir la page {display_name} : fenêtre principale introuvable."
+            )
+            return
+
+        # 1) Si MainWindow expose une méthode de navigation
+        method_names = [
+            "show_page",
+            "navigate_to_page",
+            "change_page",
+            "set_current_page",
+            "open_page",
+            "go_to_page",
+            "switch_page",
+        ]
+
+        for method_name in method_names:
+            method = getattr(main_window, method_name, None)
+
+            if callable(method):
+                for alias in aliases:
+                    try:
+                        method(alias)
+                        return
+                    except TypeError:
+                        # Certaines méthodes ne prennent peut-être pas de paramètre.
+                        continue
+                    except Exception:
+                        # On teste l'alias suivant sans casser l'application.
+                        continue
+
+        # 2) Si MainWindow utilise un dictionnaire pages = {"discovery": widget, ...}
+        pages_dict = getattr(main_window, "pages", None)
+
+        if isinstance(pages_dict, dict):
+            for alias in aliases:
+                widget = pages_dict.get(alias)
+
+                if widget is not None and self.set_stacked_widget_current(main_window, widget):
+                    return
+
+        # 3) Si MainWindow a un dictionnaire page_indexes = {"discovery": 2, ...}
+        page_indexes = getattr(main_window, "page_indexes", None)
+
+        if isinstance(page_indexes, dict):
+            for alias in aliases:
+                index = page_indexes.get(alias)
+
+                if isinstance(index, int) and self.set_stacked_widget_index(main_window, index):
+                    return
+
+        # 4) Si les pages existent comme attributs : self.discovery_page, self.acl_page...
+        possible_widget_attrs = []
+
+        for alias in aliases:
+            base = str(alias).lower()
+
+            possible_widget_attrs.extend([
+                base,
+                f"{base}_page",
+                f"page_{base}",
+            ])
+
+        for attr_name in possible_widget_attrs:
+            widget = getattr(main_window, attr_name, None)
+
+            if widget is not None and self.set_stacked_widget_current(main_window, widget):
+                return
+
+        QMessageBox.information(
+            self,
+            "Navigation",
+            (
+                f"Le bouton est connecté, mais je n'ai pas trouvé la page {display_name} "
+                "dans MainWindow.\n\n"
+                "Solution : ajoute dans MainWindow une méthode show_page(page_name), "
+                "ou passe main_window au DashboardPage."
+            )
+        )
+
+    def find_stacked_widget(self, main_window):
+        """
+        Cherche le QStackedWidget principal dans MainWindow avec plusieurs noms possibles.
+        """
+        possible_names = [
+            "stack",
+            "stacked_widget",
+            "stackedWidget",
+            "pages_stack",
+            "content_stack",
+            "main_stack",
+            "central_stack",
+        ]
+
+        for name in possible_names:
+            stack = getattr(main_window, name, None)
+
+            if stack is not None and hasattr(stack, "setCurrentWidget"):
+                return stack
+
+        return None
+
+    def set_stacked_widget_current(self, main_window, widget):
+        stack = self.find_stacked_widget(main_window)
+
+        if stack is None:
+            return False
+
+        try:
+            stack.setCurrentWidget(widget)
+            return True
+        except Exception:
+            return False
+
+    def set_stacked_widget_index(self, main_window, index):
+        stack = self.find_stacked_widget(main_window)
+
+        if stack is None:
+            return False
+
+        try:
+            stack.setCurrentIndex(index)
+            return True
+        except Exception:
+            return False
 
     def build_health_card(self):
         health_wrap = QHBoxLayout()
@@ -846,6 +1145,9 @@ class DashboardPage(QWidget):
         group = QParallelAnimationGroup(self)
 
         for widget in self.animated_cards:
+            if widget.isHidden():
+                continue
+
             effect = QGraphicsOpacityEffect(widget)
             effect.setOpacity(0.0)
             widget.setGraphicsEffect(effect)

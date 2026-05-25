@@ -1,22 +1,17 @@
-import sqlite3
-
 from fastapi import APIRouter, WebSocket
 from fastapi import WebSocketDisconnect
-from pydantic import BaseModel
-from typing import List
 
 from app.websocket.manager import active_connections
 from app.services.ai_service import run_ai_agent_from_report
 from app.api.shémas import (
     AIReportRequest,
-    Notification,
-    ScoreItem,
     ScoreHistoryResponse
 )
 from app.database.database import (
     create_notification,
     save_score,
-    add_log
+    add_log,
+    connect_db
 )
 
 router = APIRouter(prefix="/ai", tags=["AI"])
@@ -24,7 +19,6 @@ router = APIRouter(prefix="/ai", tags=["AI"])
 
 @router.post("/validate")
 def validate_discovery_report(request: AIReportRequest):
-
     print("REQUEST:", request.dict())
 
     result = run_ai_agent_from_report(
@@ -37,7 +31,6 @@ def validate_discovery_report(request: AIReportRequest):
     print("AI RESULT:", result)
 
     score = result.get("score", 0)
-
     save_score(request.user_id, int(score))
 
     add_log(
@@ -56,6 +49,8 @@ def validate_discovery_report(request: AIReportRequest):
         "message": "Discovery report analyzed successfully",
         "data": result
     }
+
+
 @router.post("/validate-fix")
 def validate_fix(data: dict):
     confirm = data.get("confirm")
@@ -65,9 +60,7 @@ def validate_fix(data: dict):
         user_id=data.get("user_id"),
         module="AI_SECURITY",
         status="APPROVED" if confirm else "REJECTED",
-        extra={
-            "confirm": confirm
-        }
+        extra={"confirm": confirm}
     )
 
     return {
@@ -78,7 +71,6 @@ def validate_fix(data: dict):
 @router.post("/apply-fix")
 def apply_fix(data: dict):
     fixes = data.get("fixes", [])
-
     executed_commands = []
 
     for fix in fixes:
@@ -118,8 +110,17 @@ async def notifications_ws(websocket: WebSocket, user_id: int):
 
 @router.get("/score-history/{user_id}", response_model=ScoreHistoryResponse)
 def get_score_history(user_id: int):
-    conn = sqlite3.connect("network_app.db")
+    conn = connect_db()
     cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ai_scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            score INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
 
     cursor.execute(
         """
@@ -132,6 +133,7 @@ def get_score_history(user_id: int):
     )
 
     rows = cursor.fetchall()
+    conn.commit()
     conn.close()
 
     add_log(
@@ -139,17 +141,15 @@ def get_score_history(user_id: int):
         user_id=user_id,
         module="AI_SECURITY",
         status="SUCCESS",
-        extra={
-            "count": len(rows)
-        }
+        extra={"count": len(rows)}
     )
 
     return {
         "user_id": user_id,
         "history": [
             {
-                "score": row[0],
-                "timestamp": row[1]
+                "score": row["score"],
+                "timestamp": row["created_at"]
             }
             for row in rows
         ]

@@ -4,13 +4,30 @@ import json
 from passlib.hash import bcrypt
 import os
 
-DATABASE_NAME = "/mnt/c/Users/Rawen/pfe_project/pfe_project/network_app.db"
+import sys
+
+def get_app_dir():
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(sys.executable)
+
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+
+
+BASE_DIR = get_app_dir()
+DATA_DIR = os.path.join(BASE_DIR, "data")
+REPORTS_DIR = os.path.join(BASE_DIR, "reports")
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
+DATABASE_NAME = os.path.join(DATA_DIR, "network_app.db")
 
 
 # =========================
 # Connexion DB
 # =========================
 def connect_db():
+    print("DATABASE =", DATABASE_NAME)
     conn = sqlite3.connect(DATABASE_NAME)
     conn.row_factory = sqlite3.Row
     return conn
@@ -51,6 +68,7 @@ def create_tables():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
+        email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         role_id INTEGER,
         created_at TEXT,
@@ -333,7 +351,7 @@ def assign_permissions(cursor):
 # =========================
 # Gestion utilisateurs
 # =========================
-def create_user(cursor, username, password, role):
+def create_user(cursor, username,email, password, role):
     hashed = bcrypt.hash(password)
 
     cursor.execute("SELECT id FROM roles WHERE name = ?", (role,))
@@ -346,9 +364,9 @@ def create_user(cursor, username, password, role):
     date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     cursor.execute("""
-        INSERT INTO users (username, password, role_id, created_at)
-        VALUES (?, ?, ?, ?)
-    """, (username, hashed, role_id, date))
+        INSERT INTO users (username, email, password, role_id, created_at)
+        VALUES (?, ?, ?, ?, ?)
+    """, (username, email,  hashed, role_id, date))
 
 
 def authenticate(cursor, username, password):
@@ -849,11 +867,24 @@ def save_vlsm_to_db(vlsm_data):
     finally:
         conn.close()
 
+#Initialisation automatique de DB:  
+def migrate_database(cursor):
+    """
+    Migration automatique des anciennes bases SQLite.
+    """
 
-# =========================
-# Main
-# =========================
-if __name__ == "__main__":
+    cursor.execute("PRAGMA table_info(users)")
+    columns = [col[1] for col in cursor.fetchall()]
+
+    if "email" not in columns:
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN email TEXT"
+        )
+
+        print("Migration OK : colonne email ajoutée")      
+
+
+def init_database():
     create_tables()
 
     conn = connect_db()
@@ -861,25 +892,56 @@ if __name__ == "__main__":
 
     seed_data(cursor)
     assign_permissions(cursor)
+
+    # Migration users.email
+    cursor.execute("PRAGMA table_info(users)")
+    columns = [col[1] for col in cursor.fetchall()]
+
+    if "email" not in columns:
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN email TEXT"
+        )
+        conn.commit()
+        print("Migration OK : colonne email ajoutée")
+
+    # Migration AI Scores
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ai_scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            score INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """)
+
+    print("Migration OK : table ai_scores vérifiée")
+
     conn.commit()
+
+    try:
+        create_user(
+            cursor,
+            "admin",
+            "admin@exemple.com",
+            "admin123",
+            "admin"
+        )
+
+        conn.commit()
+        print("Admin user created")
+
+    except sqlite3.IntegrityError:
+        print("Admin already exists")
+
+    conn.close()
+# =========================
+# Main
+# =========================
+if __name__ == "__main__":
+
+    init_database()
+    
 
     print("Base de données créée avec succès")
 
-    try:
-        create_user(cursor, "admin", "admin123", "admin")
-        conn.commit()
-        print("Admin user created")
-    except sqlite3.IntegrityError:
-        print("User already exists")
-
-    user_id = authenticate(cursor, "admin", "admin123")
-    print("Authenticated user_id:", user_id)
-
-    if user_id:
-        print("Has manage_users:", has_permission(cursor, user_id, "manage_users"))
-        print("Has create_vlan:", has_permission(cursor, user_id, "create_vlan"))
-        print("Has view_alerts:", has_permission(cursor, user_id, "view_alerts"))
-        print("Has discover_site:", has_permission(cursor, user_id, "discover_site"))
-        print("Has deploy_configs:", has_permission(cursor, user_id, "deploy_configs"))
-
-    conn.close()
+    

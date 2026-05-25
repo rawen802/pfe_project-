@@ -77,8 +77,8 @@ class DeployVlanVlsmPage(QWidget):
     def create_steps(self):
         layout = QHBoxLayout()
         steps = [
-            "✓ 1. Génération\nComplété",
-            "✓ 2. Validation AI\nValidé",
+            "1. Génération\nComplété",
+            "2. Validation AI\nValidé",
             "3. Déploiement\nEn cours",
             "4. Résultat\nEn attente"
         ]
@@ -148,7 +148,7 @@ class DeployVlanVlsmPage(QWidget):
         self.config_info = QLabel("Lignes : -     Taille : -")
         self.config_info.setObjectName("subtitle")
 
-        btn_view = QPushButton("👁 Voir la configuration complète")
+        btn_view = QPushButton("Voir la configuration complète")
         btn_view.setObjectName("darkBtn")
         btn_view.clicked.connect(self.show_full_config)
 
@@ -204,7 +204,7 @@ class DeployVlanVlsmPage(QWidget):
         self.selected_label = QLabel("0 équipement(s) sélectionné(s)")
         self.selected_label.setObjectName("subtitle")
 
-        btn_remove = QPushButton("🗑 Supprimer la sélection")
+        btn_remove = QPushButton("Supprimer la sélection")
         btn_remove.setObjectName("dangerBtn")
         btn_remove.clicked.connect(self.remove_selected_devices)
 
@@ -276,7 +276,7 @@ class DeployVlanVlsmPage(QWidget):
             "Équipements traités : 0 / 0"
         )
 
-        self.deploy_btn = QPushButton("▶ Lancer le déploiement")
+        self.deploy_btn = QPushButton("Lancer le déploiement")
         self.deploy_btn.setObjectName("deployBtn")
         self.deploy_btn.clicked.connect(self.deploy_configs)
 
@@ -516,7 +516,7 @@ class DeployVlanVlsmPage(QWidget):
         QMessageBox.information(
             self,
             "Résultat du déploiement",
-            f"Déploiement VLAN/VLSM réussi ✓\n\n"
+            f"Déploiement VLAN/VLSM réussi\n\n"
             f"Équipements : {total}\n"
             f"Date : {now}"
         )
@@ -688,8 +688,8 @@ class DeployVlanVlsmPage(QWidget):
             }
 
             QTextEdit#cliBox, QTextEdit#logsBox {
-                background-color: #081525;
-                border: 1px solid #243D5C;
+                background-color: #0A192B;
+                border: 1px solid #1C3352;
                 border-radius: 10px;
                 color: #B6FCD5;
                 font-family: Consolas;
@@ -710,7 +710,7 @@ class DeployVlanVlsmPage(QWidget):
             }
 
             QPushButton#darkBtn {
-                background-color: #0D1A2C;
+                background-color: #13243D;
                 border: 1px solid #2B4262;
             }
 
@@ -719,9 +719,9 @@ class DeployVlanVlsmPage(QWidget):
             }
 
             QPushButton#dangerBtn {
-                background-color: #3b1111;
-                color: #ef4444;
-                border: 1px solid #7f1d1d;
+                background-color: #1E3A5F;
+                color: white;
+                border: 1px solid #315985;
             }
 
             QPushButton#deployBtn {
@@ -734,7 +734,7 @@ class DeployVlanVlsmPage(QWidget):
             }
 
             QTableWidget {
-                background-color: #081525;
+                background-color: #0A192B;
                 border: 1px solid #243D5C;
                 border-radius: 10px;
                 gridline-color: #1E3552;
@@ -742,15 +742,30 @@ class DeployVlanVlsmPage(QWidget):
             }
 
             QHeaderView::section {
-                background-color: #101F35;
+                background-color: #13243D;
                 color: #C8D5EA;
                 padding: 5px;
                 border: none;
                 font-weight: 800;
             }
 
+            QTableWidget::item {
+                background-color: #0A192B;
+                color: white;
+                padding: 4px;
+            }
+
+            QTableWidget::item:selected {
+                background-color: #1E3A5F;
+                color: white;
+            }
+
+            QTableWidget::alternate {
+                background-color: #0D1A2C;
+            }
+
             QScrollBar:vertical {
-                background: #081525;
+                background: #0A192B;
                 width: 14px;
                 margin: 0px;
                 border-radius: 7px;

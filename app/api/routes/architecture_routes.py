@@ -1,8 +1,8 @@
 import json
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.database.database import connect_db, add_log
-from core.gestion_utilisateurs.security import get_current_user , require_permission
+from core.gestion_utilisateurs.security import require_permission
 
 router = APIRouter(tags=["Architecture"])
 
@@ -13,11 +13,16 @@ def get_saved_sites(current_user: dict = Depends(require_permission("architectur
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id, site_name, created_at
-        FROM architecture_reports
-        WHERE user_id = ?
-        ORDER BY created_at DESC
-    """, (current_user["id"],))
+        SELECT 
+            ar.id,
+            ar.site_name,
+            ar.created_at,
+            ar.user_id,
+            u.username AS created_by
+        FROM architecture_reports ar
+        LEFT JOIN users u ON u.id = ar.user_id
+        ORDER BY ar.created_at DESC
+    """)
 
     rows = cursor.fetchall()
     conn.close()
@@ -39,7 +44,9 @@ def get_saved_sites(current_user: dict = Depends(require_permission("architectur
             {
                 "id": row[0],
                 "site_name": row[1],
-                "created_at": row[2]
+                "created_at": row[2],
+                "created_by_id": row[3],
+                "created_by": row[4] if row[4] else "unknown"
             }
             for row in rows
         ]
@@ -55,10 +62,17 @@ def get_architecture_by_id(
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id, site_name, report_json, created_at
-        FROM architecture_reports
-        WHERE id = ? AND user_id = ?
-    """, (report_id, current_user["id"]))
+        SELECT 
+            ar.id,
+            ar.site_name,
+            ar.report_json,
+            ar.created_at,
+            ar.user_id,
+            u.username AS created_by
+        FROM architecture_reports ar
+        LEFT JOIN users u ON u.id = ar.user_id
+        WHERE ar.id = ?
+    """, (report_id,))
 
     row = cursor.fetchone()
     conn.close()
@@ -89,7 +103,8 @@ def get_architecture_by_id(
         extra={
             "username": current_user["username"],
             "report_id": report_id,
-            "site_name": row[1]
+            "site_name": row[1],
+            "created_by": row[5] if row[5] else "unknown"
         }
     )
 
@@ -98,7 +113,9 @@ def get_architecture_by_id(
         "id": row[0],
         "site_name": row[1],
         "report": json.loads(row[2]),
-        "created_at": row[3]
+        "created_at": row[3],
+        "created_by_id": row[4],
+        "created_by": row[5] if row[5] else "unknown"
     }
 
 
@@ -111,12 +128,11 @@ def delete_architecture(
     cursor = conn.cursor()
 
     try:
-        # Vérifier existence
         cursor.execute("""
             SELECT site_name
             FROM architecture_reports
-            WHERE id = ? AND user_id = ?
-        """, (report_id, current_user["id"]))
+            WHERE id = ?
+        """, (report_id,))
 
         row = cursor.fetchone()
 
@@ -129,20 +145,21 @@ def delete_architecture(
                 extra={
                     "username": current_user["username"],
                     "report_id": report_id,
-                    "reason": "Not found or not authorized"
+                    "reason": "Architecture introuvable"
                 }
             )
 
             return {
                 "success": False,
-                "message": "Architecture introuvable ou non autorisée."
+                "message": "Architecture introuvable."
             }
 
-        #  Suppression
+        site_name = row[0]
+
         cursor.execute("""
             DELETE FROM architecture_reports
-            WHERE id = ? AND user_id = ?
-        """, (report_id, current_user["id"]))
+            WHERE id = ?
+        """, (report_id,))
 
         conn.commit()
 
@@ -154,7 +171,7 @@ def delete_architecture(
             extra={
                 "username": current_user["username"],
                 "report_id": report_id,
-                "site_name": row[0],
+                "site_name": site_name,
                 "deleted": True
             }
         )

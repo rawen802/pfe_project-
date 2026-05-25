@@ -262,8 +262,47 @@ class DiscoveryPage(QWidget):
         self.ws_client.connect_to_server()
 
         self.setup_ui()
+        self.apply_rbac_ui()
         self.show_start_message()
-        self.load_saved_sites()
+
+        permissions = self.user_data.get("permissions", [])
+
+        if "architecture_list" in permissions:
+            self.load_saved_sites()
+        else:
+            self.report_status.setText("Accès restreint selon vos permissions")
+            self.report_text.setText(
+                "Vous n'avez pas la permission de consulter les architectures sauvegardées."
+            )
+
+
+    def apply_rbac_ui(self):
+        """
+        Applique les permissions RBAC côté interface.
+
+        Important :
+        - On cache les boutons non autorisés.
+        - Les actions restent aussi protégées dans les fonctions.
+
+        Règle demandée :
+        - Le rôle analyst ne doit jamais voir le bouton "Nouvelle découverte",
+          même si la permission discover_site existe encore dans le token.
+        """
+        permissions = self.user_data.get("permissions", [])
+        role = self.user_data.get("role", "").lower()
+
+        # Cacher le bouton de découverte pour l'analyst
+        if role == "analyst":
+            self.btn_discover.hide()
+        elif "discover_site" not in permissions:
+            self.btn_discover.hide()
+
+        if "architecture_delete" not in permissions:
+            self.btn_delete_site.hide()
+
+        if "architecture_list" not in permissions:
+            self.btn_refresh.hide()
+            self.site_selector.hide()
 
     def setup_ui(self):
         self.setStyleSheet("""
@@ -634,6 +673,12 @@ class DiscoveryPage(QWidget):
                 self.ai_page.set_report(report)
 
     def load_saved_sites(self):
+        permissions = self.user_data.get("permissions", [])
+
+        if "architecture_list" not in permissions:
+            self.report_status.setText("Accès restreint selon vos permissions")
+            return
+
         if not hasattr(self.api, "get_saved_sites"):
             self.report_status.setText("ApiClient: get_saved_sites manquant")
             return
@@ -659,6 +704,11 @@ class DiscoveryPage(QWidget):
         self.site_selector.blockSignals(False)
 
     def load_selected_site(self):
+        permissions = self.user_data.get("permissions", [])
+
+        if "architecture_list" not in permissions:
+            return
+
         report_id = self.site_selector.currentData()
 
         if not report_id:
@@ -685,6 +735,16 @@ class DiscoveryPage(QWidget):
         self.send_report_to_connected_pages(report)
 
     def delete_selected_site(self):
+        permissions = self.user_data.get("permissions", [])
+
+        if "architecture_delete" not in permissions:
+            QMessageBox.information(
+                self,
+                "Accès restreint",
+                "Seul l'administrateur peut supprimer une architecture."
+            )
+            return
+
         report_id = self.site_selector.currentData()
 
         if not report_id:
@@ -716,6 +776,17 @@ class DiscoveryPage(QWidget):
         self.load_saved_sites()
 
     def open_discovery_dialog(self):
+        permissions = self.user_data.get("permissions", [])
+        role = self.user_data.get("role", "").lower()
+
+        if role == "analyst" or "discover_site" not in permissions:
+            QMessageBox.information(
+                self,
+                "Accès restreint",
+                "Vous n'avez pas la permission de lancer une découverte réseau."
+            )
+            return
+
         dialog = QDialog(self)
         dialog.setWindowTitle("Nouvelle découverte réseau")
         dialog.resize(460, 420)
@@ -787,6 +858,16 @@ class DiscoveryPage(QWidget):
         dialog.exec()
 
     def refresh_graph(self):
+        permissions = self.user_data.get("permissions", [])
+
+        if "architecture_list" not in permissions:
+            QMessageBox.information(
+                self,
+                "Accès restreint",
+                "Vous n'avez pas la permission de consulter les architectures."
+            )
+            return
+
         report_id = self.site_selector.currentData()
 
         # Cas 1 : un site sauvegardé est sélectionné
@@ -890,6 +971,17 @@ class DiscoveryPage(QWidget):
         dialog.exec()
 
     def run_discovery(self, payload):
+        permissions = self.user_data.get("permissions", [])
+        role = self.user_data.get("role", "").lower()
+
+        if role == "analyst" or "discover_site" not in permissions:
+            QMessageBox.information(
+                self,
+                "Accès restreint",
+                "Vous n'avez pas la permission de lancer une découverte réseau."
+            )
+            return
+
         self.show_scene_message("Découverte réseau en cours...", "#38bdf8")
 
         try:
@@ -908,7 +1000,9 @@ class DiscoveryPage(QWidget):
             self.discovery_report = report
 
             self.draw_graph({"report": report})
-            self.load_saved_sites()
+
+            if "architecture_list" in self.user_data.get("permissions", []):
+                self.load_saved_sites()
 
             self.send_report_to_connected_pages(report)
 

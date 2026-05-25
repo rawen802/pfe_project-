@@ -8,6 +8,23 @@ class ApiClient:
         self.token = None
         self.current_user = None
 
+    def extract_error_message(self, response):
+        try:
+            data = response.json()
+
+            if isinstance(data, dict):
+                if "detail" in data:
+                    return data["detail"]
+                if "message" in data:
+                    return data["message"]
+                if "error" in data:
+                    return data["error"]
+
+            return str(data)
+
+        except Exception:
+            return response.text
+
     # =========================
     # AUTH
     # =========================
@@ -34,7 +51,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -71,7 +89,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -99,7 +118,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -125,7 +145,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -151,7 +172,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -176,7 +198,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "error": response.text
+                "error": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -312,7 +335,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "message": response.text
+                "message": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -334,7 +358,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "message": response.text
+                "message": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -356,7 +381,8 @@ class ApiClient:
 
             return {
                 "success": False,
-                "message": response.text
+                "message": self.extract_error_message(response),
+                "status_code": response.status_code
             }
 
         except Exception as e:
@@ -364,24 +390,28 @@ class ApiClient:
                 "success": False,
                 "message": str(e)
             }
+
     def get_audit_logs(self, limit=100):
-        return self.get(f"/audit/logs?limit={limit}")   
+        return self.get(f"/audit/logs?limit={limit}")
+
     def get_security_analytics(self):
-        return self.get("/security/analytics")         
+        return self.get("/security/analytics")
 
     def has_admin(self):
         return self.get("/auth/has-admin")
 
     def setup_admin(self, payload):
-        return self.post("/auth/setup_admin", payload)  
+        return self.post("/auth/setup_admin", payload)
 
     def get_reports(self):
         return self.get("/reports/list")
+
     def generate_global_report(self):
-        return self.post("/reports/generate-global")              
+        return self.post("/reports/generate-global")
 
     def export_report_pdf(self, report_id):
         return self.post(f"/reports/export-pdf/{report_id}")
+
     def open_report_pdf(self, pdf_path):
-        import os 
-        os.startfile(pdf_path)    
+        import os
+        os.startfile(pdf_path)

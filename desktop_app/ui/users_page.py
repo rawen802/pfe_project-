@@ -22,7 +22,13 @@ class UsersPage(QWidget):
 
         self.setup_ui()
         self.apply_styles()
-        self.load_users()
+
+        permissions = self.user_data.get("permissions", [])
+
+        if "manage_users" in permissions:
+            self.load_users()
+        else:
+            print("UsersPage skipped: permission missing")
 
     def setup_ui(self):
         root = QVBoxLayout(self)
@@ -125,7 +131,6 @@ class UsersPage(QWidget):
     def create_stat_card(self, title, value_label, subtitle, color):
         frame = QFrame()
         frame.setObjectName("statCard")
-        frame.setProperty("cardColor", color)
         frame.setStyleSheet(f"""
             QFrame#statCard {{
                 background-color: {color};
@@ -161,13 +166,25 @@ class UsersPage(QWidget):
         return frame
 
     def load_users(self):
+        permissions = self.user_data.get("permissions", [])
+
+        if "manage_users" not in permissions:
+            print("UsersPage load_users blocked: permission missing")
+            return
+
         result = self.api.get_users()
 
         if not result["success"]:
             QMessageBox.critical(self, "Erreur", result["error"])
             return
 
-        self.all_users = result["data"]
+        data = result["data"]
+
+        if isinstance(data, dict):
+            self.all_users = data.get("users", [])
+        else:
+            self.all_users = data
+
         self.update_stats()
         self.apply_filters()
 
@@ -243,19 +260,11 @@ class UsersPage(QWidget):
             self.table.setItem(row, 5, actions_item)
 
     def add_user(self):
-        username, ok = QInputDialog.getText(
-            self,
-            "Ajouter utilisateur",
-            "Nom d'utilisateur :"
-        )
+        username, ok = QInputDialog.getText(self, "Ajouter utilisateur", "Nom d'utilisateur :")
         if not ok or not username.strip():
             return
 
-        email, ok = QInputDialog.getText(
-            self,
-            "Ajouter utilisateur",
-            "Email réel de l'utilisateur :"
-        )
+        email, ok = QInputDialog.getText(self, "Ajouter utilisateur", "Email réel de l'utilisateur :")
         if not ok or not email.strip():
             QMessageBox.warning(self, "Attention", "L'email est obligatoire.")
             return
@@ -264,11 +273,7 @@ class UsersPage(QWidget):
             QMessageBox.warning(self, "Attention", "Veuillez entrer un email valide.")
             return
 
-        password, ok = QInputDialog.getText(
-            self,
-            "Ajouter utilisateur",
-            "Mot de passe :"
-        )
+        password, ok = QInputDialog.getText(self, "Ajouter utilisateur", "Mot de passe :")
         if not ok or not password.strip():
             return
 

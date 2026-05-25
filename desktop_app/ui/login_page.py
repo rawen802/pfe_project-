@@ -4,9 +4,9 @@ from PySide6.QtWidgets import (
     QMessageBox
 )
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont , QPixmap
+from PySide6.QtGui import QFont, QPixmap
 from services.api_client import ApiClient
-import os 
+import os
 
 
 class SetupAdminDialog(QDialog):
@@ -291,11 +291,11 @@ class LoginPage(QWidget):
             "icones",
             "verified.png"
         )
+
         shield = QLabel()
         shield.setObjectName("shield")
         pixmap = QPixmap(icon_path)
 
-        # debug important
         print("Icon exists:", os.path.exists(icon_path))
 
         pixmap = pixmap.scaled(32, 32, Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -358,6 +358,13 @@ class LoginPage(QWidget):
         if dialog.exec() == QDialog.Accepted:
             self.check_admin_status()
 
+    def show_access_restricted_message(self):
+        QMessageBox.information(
+            self,
+            "Accès restreint",
+            "Votre rôle ne permet pas d'accéder à cette fonctionnalité."
+        )
+
     def handle_login(self):
         username = self.username_input.text().strip()
         password = self.password_input.text().strip()
@@ -373,29 +380,69 @@ class LoginPage(QWidget):
         try:
             result = self.api.login(username, password)
 
-            if result["success"]:
-                self.api.token = result["token"]
+            if result.get("success"):
+                self.api.token = result.get("token")
                 me = self.api.get_me()
 
-                if me["success"]:
+                if me.get("success"):
                     user_data = {
                         "id": me["data"].get("id"),
                         "username": me["data"].get("username"),
                         "role": me["data"].get("role"),
                         "permissions": me["data"].get("permissions", []),
-                        "token": result["token"]
+                        "token": result.get("token")
                     }
+
                     print("USER DATA =", user_data)
 
+                    # Envoyer les informations utilisateur à l'application principale
                     self.login_success.emit(user_data)
+
+                    # Fermer la fenêtre Login après une connexion réussie
+                    # pour éviter d'avoir plusieurs fenêtres ouvertes.
+                    self.close()
+                    return
+
                 else:
-                    self.error_label.setText("Erreur récupération utilisateur")
+                    error_message = me.get("error", "")
+                    status_code = me.get("status_code")
+
+                    if (
+                        status_code == 403
+                        or "Accès restreint" in error_message
+                        or "permissions" in error_message
+                    ):
+                        self.show_access_restricted_message()
+                    else:
+                        self.error_label.setText("Erreur récupération utilisateur")
+
             else:
-                self.error_label.setText("Nom d'utilisateur ou mot de passe incorrect")
+                error_message = result.get("error", "")
+                status_code = result.get("status_code")
+
+                if (
+                    status_code == 403
+                    or "Accès restreint" in error_message
+                    or "permissions" in error_message
+                ):
+                    self.show_access_restricted_message()
+                else:
+                    self.error_label.setText("Nom d'utilisateur ou mot de passe incorrect")
 
         except Exception as e:
             print("LOGIN ERROR:", e)
-            self.error_label.setText("Erreur connexion backend")
+
+            error_message = str(e)
+
+            if (
+                "Accès restreint" in error_message
+                or "permissions" in error_message
+                or "403" in error_message
+                or "Forbidden" in error_message
+            ):
+                self.show_access_restricted_message()
+            else:
+                self.error_label.setText("Erreur connexion backend")
 
         finally:
             self.login_btn.setEnabled(True)
