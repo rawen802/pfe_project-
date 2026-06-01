@@ -1,0 +1,935 @@
+{
+    "report_type": "GLOBAL_NETWORK_REPORT",
+    "generated_at": "2026-05-27 19:00:37",
+    "generated_by": {
+        "user_id": 1,
+        "username": "admin"
+    },
+    "summary": {
+        "devices_count": 1,
+        "links_count": 0,
+        "vlans_count": 10,
+        "ip_plans_count": 1,
+        "acls_count": 0,
+        "logs_count": 63,
+        "notifications_count": 16,
+        "ai_scores_count": 4
+    },
+    "sections": {
+        "devices": [
+            {
+                "id": 1,
+                "hostname": "SW-CORE",
+                "ip": "192.168.99.20",
+                "type": "SITE_CORE",
+                "detected_at": "2026-05-27 00:43:12"
+            }
+        ],
+        "links": [],
+        "vlans": [
+            {
+                "id": 1,
+                "vlan_id": 1,
+                "vlan_name": "default",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 2,
+                "vlan_id": 10,
+                "vlan_name": "ADMIN",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 3,
+                "vlan_id": 20,
+                "vlan_name": "USERS",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 4,
+                "vlan_id": 30,
+                "vlan_name": "SERVERS",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 5,
+                "vlan_id": 40,
+                "vlan_name": "SECURITY",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 6,
+                "vlan_id": 1002,
+                "vlan_name": "fddi-default",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 7,
+                "vlan_id": 1003,
+                "vlan_name": "token-ring-default",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 8,
+                "vlan_id": 1004,
+                "vlan_name": "fddinet-default",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 9,
+                "vlan_id": 1005,
+                "vlan_name": "trnet-default",
+                "device_id": 1,
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 10,
+                "vlan_id": 50,
+                "vlan_name": "ADMIN",
+                "device_id": 1,
+                "created_at": "2026-05-27 01:28:38"
+            }
+        ],
+        "ip_plans": [
+            {
+                "id": 1,
+                "department_id": 1,
+                "vlan_id": 10,
+                "subnet": "192.168.10.0/27",
+                "mask": "255.255.255.224",
+                "gateway": "192.168.10.1",
+                "broadcast": "192.168.10.31",
+                "created_at": "2026-05-27T01:28:00.672704"
+            }
+        ],
+        "acls": [],
+        "ai_scores": [
+            {
+                "id": 1,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-26 23:55:19"
+            },
+            {
+                "id": 2,
+                "user_id": 1,
+                "score": 92,
+                "created_at": "2026-05-26 23:55:19"
+            },
+            {
+                "id": 3,
+                "user_id": 1,
+                "score": 78,
+                "created_at": "2026-05-27 00:29:59"
+            },
+            {
+                "id": 4,
+                "user_id": 1,
+                "score": 78,
+                "created_at": "2026-05-27 00:29:59"
+            }
+        ],
+        "logs": [
+            {
+                "id": 1,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-26 19:15:08"
+            },
+            {
+                "id": 2,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 19}",
+                "created_at": "2026-05-26 19:15:08"
+            },
+            {
+                "id": 3,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-26 19:15:09"
+            },
+            {
+                "id": 4,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 0}",
+                "created_at": "2026-05-26 19:15:09"
+            },
+            {
+                "id": 5,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-26 19:15:09"
+            },
+            {
+                "id": 6,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-26 19:15:09"
+            },
+            {
+                "id": 7,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-26 19:15:10"
+            },
+            {
+                "id": 8,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 9,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 19}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 10,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 0, \"vlan_count\": 0, \"ai_score\": 0, \"unread_notifications\": 0}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 11,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 0}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 12,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 13,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 14,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 0}",
+                "created_at": "2026-05-27 00:42:05"
+            },
+            {
+                "id": 15,
+                "action": "DISCOVER_SITE",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"ciment bizerte\", \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 9, \"report_id\": 1, \"file_path\": \"reports/discovery_report_ciment_bizerte_20260527_004312.json\", \"errors\": []}",
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 16,
+                "action": "DISCOVER_SITE_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DISCOVERY",
+                "status": "success",
+                "extra": "{\"site_name\": \"ciment bizerte\", \"device_count\": 1, \"link_count\": 0, \"saved_devices\": 1, \"saved_links\": 0, \"saved_vlans\": 9, \"report_id\": 1, \"architecture_report_id\": 1, \"file_path\": \"reports/discovery_report_ciment_bizerte_20260527_004312.json\"}",
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 17,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 00:43:12"
+            },
+            {
+                "id": 18,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 1, \"vlan_count\": 9, \"ai_score\": 0, \"unread_notifications\": 1}",
+                "created_at": "2026-05-27 00:52:14"
+            },
+            {
+                "id": 19,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 00:52:37"
+            },
+            {
+                "id": 20,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 00:52:57"
+            },
+            {
+                "id": 21,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 92, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-27 00:55:19"
+            },
+            {
+                "id": 22,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 2}",
+                "created_at": "2026-05-27 00:55:19"
+            },
+            {
+                "id": 23,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 2}",
+                "created_at": "2026-05-27 00:55:20"
+            },
+            {
+                "id": 24,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 2}",
+                "created_at": "2026-05-27 00:56:01"
+            },
+            {
+                "id": 25,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 26,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 19}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 27,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 1, \"vlan_count\": 9, \"ai_score\": 92, \"unread_notifications\": 4}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 28,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 29,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 30,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 2}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 31,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 2}",
+                "created_at": "2026-05-27 01:19:11"
+            },
+            {
+                "id": 32,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"report_id\": 1, \"site_name\": \"ciment bizerte\", \"created_by\": \"admin\"}",
+                "created_at": "2026-05-27 01:19:39"
+            },
+            {
+                "id": 33,
+                "action": "VALIDATE_VLSM",
+                "device_id": null,
+                "user_id": 1,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"warnings\": 0}",
+                "created_at": "2026-05-27 01:28:00"
+            },
+            {
+                "id": 34,
+                "action": "GENERATE_VLSM",
+                "device_id": null,
+                "user_id": 1,
+                "module": "VLSM",
+                "status": "success",
+                "extra": "{\"base_network\": \"192.168.10.0/24\", \"requested_zone_count\": 1, \"planned_zone_count\": 1, \"skipped_zone_count\": 0, \"error_count\": 0, \"warning_count\": 0}",
+                "created_at": "2026-05-27 01:28:00"
+            },
+            {
+                "id": 35,
+                "action": "GENERATE_VLAN",
+                "device_id": null,
+                "user_id": 1,
+                "module": "VLAN",
+                "status": "success",
+                "extra": "{\"created\": 1, \"skipped\": 0, \"saved_vlans\": 1, \"db_errors\": [], \"errors\": []}",
+                "created_at": "2026-05-27 01:28:38"
+            },
+            {
+                "id": 36,
+                "action": "RENDER_NETWORK_CONFIG_FINAL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "GENERATOR",
+                "status": "success",
+                "extra": "{\"device_count\": 1, \"file_count\": 1, \"used_final_plan\": true}",
+                "created_at": "2026-05-27 01:28:54"
+            },
+            {
+                "id": 37,
+                "action": "VALIDATE_AI",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"score\": 78, \"message\": \"Discovery report analyzed successfully\"}",
+                "created_at": "2026-05-27 01:29:59"
+            },
+            {
+                "id": 38,
+                "action": "APPLY_AI_FIX",
+                "device_id": null,
+                "user_id": null,
+                "module": "AI_SECURITY",
+                "status": "APPLIED",
+                "extra": "{\"fix_count\": 3, \"commands\": [\"vlan 50\", \"name ADMIN_MGMT\", \"exit\", \"vlan 10\", \"name ADMIN\", \"exit\", \"interface Vlan10\", \"description SVI for ADMIN Network\", \"ip address 192.168.10.1 255.255.255.224\", \"no shutdown\", \"exit\", \"no vlan 1002\", \"no vlan 1003\", \"no vlan 1004\", \"no vlan 1005\"]}",
+                "created_at": "2026-05-27 01:30:14"
+            },
+            {
+                "id": 39,
+                "action": "APPLY_AI_FIX",
+                "device_id": null,
+                "user_id": null,
+                "module": "AI_SECURITY",
+                "status": "APPLIED",
+                "extra": "{\"fix_count\": 3, \"commands\": [\"vlan 50\", \"name ADMIN_MGMT\", \"exit\", \"vlan 10\", \"name ADMIN\", \"exit\", \"interface Vlan10\", \"description SVI for ADMIN Network\", \"ip address 192.168.10.1 255.255.255.224\", \"no shutdown\", \"exit\", \"no vlan 1002\", \"no vlan 1003\", \"no vlan 1004\", \"no vlan 1005\"]}",
+                "created_at": "2026-05-27 01:35:00"
+            },
+            {
+                "id": 40,
+                "action": "DEPLOY_NETWORK_CONFIGS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DEPLOYMENT",
+                "status": "failed",
+                "extra": "{\"error\": \"[Errno 2] No such file or directory: 'ansible-playbook'\"}",
+                "created_at": "2026-05-27 01:35:57"
+            },
+            {
+                "id": 41,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-27 18:54:11"
+            },
+            {
+                "id": 42,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 19}",
+                "created_at": "2026-05-27 18:54:11"
+            },
+            {
+                "id": 43,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 1, \"vlan_count\": 10, \"ai_score\": 78, \"unread_notifications\": 12}",
+                "created_at": "2026-05-27 18:54:11"
+            },
+            {
+                "id": 44,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 18:54:11"
+            },
+            {
+                "id": 45,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 18:54:11"
+            },
+            {
+                "id": 46,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 4}",
+                "created_at": "2026-05-27 18:54:12"
+            },
+            {
+                "id": 47,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 4}",
+                "created_at": "2026-05-27 18:54:12"
+            },
+            {
+                "id": 48,
+                "action": "CREATE_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"created_username\": \"rawen\", \"created_email\": \"rawen.khadhar@gmail.com\", \"created_role\": \"engineer\", \"created_by\": \"admin\"}",
+                "created_at": "2026-05-27 18:55:14"
+            },
+            {
+                "id": 49,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 2}",
+                "created_at": "2026-05-27 18:55:16"
+            },
+            {
+                "id": 50,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"report_id\": 1, \"site_name\": \"ciment bizerte\", \"created_by\": \"admin\"}",
+                "created_at": "2026-05-27 18:55:33"
+            },
+            {
+                "id": 51,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 18:56:53"
+            },
+            {
+                "id": 52,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 18:57:13"
+            },
+            {
+                "id": 53,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 18:57:33"
+            },
+            {
+                "id": 54,
+                "action": "GENERATE_ACL",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ACL",
+                "status": "partial_success",
+                "extra": "{\"created\": 0, \"updated\": 0, \"deleted\": 0, \"saved_rules\": 0, \"errors\": [\"zone not found\"]}",
+                "created_at": "2026-05-27 18:57:53"
+            },
+            {
+                "id": 55,
+                "action": "LOGIN_SUCCESS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\"}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 56,
+                "action": "GET_CURRENT_USER",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AUTH",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"role\": \"admin\", \"permissions_count\": 19}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 57,
+                "action": "VIEW_DASHBOARD_SUMMARY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "DASHBOARD",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"device_count\": 1, \"vlan_count\": 10, \"ai_score\": 78, \"unread_notifications\": 16}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 58,
+                "action": "VIEW_SAVED_ARCHITECTURES",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"count\": 1}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 59,
+                "action": "LIST_USERS",
+                "device_id": null,
+                "user_id": 1,
+                "module": "USER_MANAGEMENT",
+                "status": "SUCCESS",
+                "extra": "{\"viewed_by\": \"admin\", \"count\": 2}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 60,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 4}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 61,
+                "action": "VIEW_AI_SCORE_HISTORY",
+                "device_id": null,
+                "user_id": 1,
+                "module": "AI_SECURITY",
+                "status": "SUCCESS",
+                "extra": "{\"count\": 4}",
+                "created_at": "2026-05-27 18:58:33"
+            },
+            {
+                "id": 62,
+                "action": "VIEW_ARCHITECTURE",
+                "device_id": null,
+                "user_id": 1,
+                "module": "ARCHITECTURE",
+                "status": "SUCCESS",
+                "extra": "{\"username\": \"admin\", \"report_id\": 1, \"site_name\": \"ciment bizerte\", \"created_by\": \"admin\"}",
+                "created_at": "2026-05-27 18:58:39"
+            },
+            {
+                "id": 63,
+                "action": "EXPORT_REPORT_PDF",
+                "device_id": null,
+                "user_id": 1,
+                "module": "Reports",
+                "status": "SUCCESS",
+                "extra": "\"{\\\"report_id\\\": 1, \\\"pdf_path\\\": \\\"generated_reports/discovery_report_ciment bizerte\\\"}\"",
+                "created_at": "2026-05-27 19:00:22"
+            }
+        ],
+        "notifications": [
+            {
+                "id": 1,
+                "user_id": 1,
+                "message": "Découverte terminée pour ciment bizerte.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Découverte réseau terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 2,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            },
+            {
+                "id": 3,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            },
+            {
+                "id": 4,
+                "user_id": 1,
+                "message": "HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Max retries exceeded with url: /v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyASxXGq6jwRRBE1RKo_fOns9P-dVXhF1Ts (Caused by NameResolutionError(\"HTTPSConnection(host='generativelanguage.googleapis.com', port=443): Failed to resolve 'generativelanguage.googleapis.com' ([Errno -3] Temporary failure in name resolution)\"))",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-27T00:55:19.860861",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 5,
+                "user_id": 1,
+                "message": "1 sous-réseau(x) planifié(s) et sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Plan VLSM généré",
+                "email_sent": 0
+            },
+            {
+                "id": 6,
+                "user_id": 1,
+                "message": "1 VLAN(s) généré(s), 0 ignoré(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Génération VLAN terminée",
+                "email_sent": 0
+            },
+            {
+                "id": 7,
+                "user_id": 1,
+                "message": "1 configuration(s) générée(s), 1 fichier(s) sauvegardé(s).",
+                "type": "info",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Configuration réseau générée",
+                "email_sent": 0
+            },
+            {
+                "id": 8,
+                "user_id": 1,
+                "message": "VLAN 10 and VLAN 50 are both named 'ADMIN'. This ambiguous naming convention creates confusion and potential for misconfiguration, especially since the 'ADMIN' zone is associated with VLAN 50 in the network context, but the planned subnet for 'ADMIN' needs a clear VLAN ID.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-27T01:29:59.642711",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 9,
+                "user_id": 1,
+                "message": "The planned subnet 192.168.10.0/27 for the 'ADMIN' zone has a specified gateway of 192.168.10.1, but there is no corresponding Switched Virtual Interface (SVI) explicitly configured or listed as planned on 'SW-CORE' for the associated VLAN (presumably VLAN 10). Without an SVI, this subnet will not be routable.",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": "2026-05-27T01:29:59.643838",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 10,
+                "user_id": 1,
+                "message": "The discovery report indicates that critical configuration details such as active VLANs, SVIs, and trunk interfaces were not extracted directly from 'SW-CORE' (topology.devices[0].vlans, svis, trunks are empty). This severely limits the ability to perform a comprehensive validation of the actual running configuration against the planned or contextual information.",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": "2026-05-27T01:29:59.644715",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 11,
+                "user_id": 1,
+                "message": "Default/reserved VLANs (1002-1005) for legacy technologies (FDDI, Token Ring) are present on 'SW-CORE'. These VLANs are typically unused in modern Ethernet networks and can clutter the configuration.",
+                "type": "info",
+                "is_read": 0,
+                "created_at": "2026-05-27T01:29:59.645548",
+                "title": "Notification",
+                "email_sent": 0
+            },
+            {
+                "id": 12,
+                "user_id": 1,
+                "message": "[Errno 2] No such file or directory: 'ansible-playbook'",
+                "type": "critical",
+                "is_read": 0,
+                "created_at": null,
+                "title": "Erreur déploiement réseau",
+                "email_sent": 1
+            },
+            {
+                "id": 13,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            },
+            {
+                "id": 14,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            },
+            {
+                "id": 15,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            },
+            {
+                "id": 16,
+                "user_id": 1,
+                "message": "0 règle(s) ACL sauvegardée(s).",
+                "type": "warning",
+                "is_read": 0,
+                "created_at": null,
+                "title": "ACL générées",
+                "email_sent": 0
+            }
+        ]
+    }
+}

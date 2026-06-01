@@ -1,0 +1,10 @@
+- name: Test VLAN deploy
+  hosts: SW-CORE
+  gather_facts: no
+
+  tasks:
+    - name: Create VLAN 50
+      cisco.ios.ios_config:
+        lines:
+          - vlan 50
+          - name VLAN2

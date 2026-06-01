@@ -1,0 +1,24 @@
+{% for vlan in data.vlans %}
+vlan {{ vlan.vlan_id }}
+ name {{ vlan.vlan_name }}
+
+{% endfor %}
+
+{% for trunk in data.trunks %}
+interface {{ trunk.interface }}
+ switchport trunk allowed vlan add {{ trunk.vlan_ids | join(",") }}
+
+{% endfor %}
+
+{% for svi in data.svis %}
+interface Vlan{{ svi.vlan_id }}
+ description Gateway for {{ svi.zone_name }}
+ ip address {{ svi.interface_ip }} {{ svi.mask }}
+ no shutdown
+
+{% endfor %}
+
+{% if data.default_gateway %}
+ip default-gateway {{ data.default_gateway }}
+
+{% endif %}

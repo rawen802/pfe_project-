@@ -1,0 +1,11 @@
+---
+- name: Deploy generated N configs files to Cisco IOS devices
+  hosts: all
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+
+  tasks:
+    - name: Push config file to device
+      cisco.ios.ios_config:
+        src: "../../output/configs/{{ inventory_hostname }}.cfg"
+        save_when: modified

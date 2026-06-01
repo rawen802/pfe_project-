@@ -1,0 +1,96 @@
+{
+  "site": {
+    "site_name": "ségie",
+    "core_device": {
+      "hostname": "CORE-S",
+      "ip": "192.168.1.1",
+      "model": "cisco 2960",
+      "role": "SITE_CORE"
+    }
+  },
+  "summary": {
+    "device_count": 1,
+    "switch_count": 1,
+    "router_count": 0,
+    "firewall_count": 0,
+    "zone_count": 0,
+    "vlan_count": 0,
+    "subnet_count": 0,
+    "acl_candidate_count": 0
+  },
+  "topology": {
+    "devices": [
+      {
+        "hostname": "CORE-S",
+        "ip": "192.168.1.1",
+        "role": "SITE_CORE",
+        "model": "cisco 2960",
+        "reachable": false
+      }
+    ],
+    "links": []
+  },
+  "inventory": {
+    "devices": [
+      {
+        "ip": "192.168.1.1",
+        "hostname": "CORE-S",
+        "model": "cisco 2960",
+        "vendor": "",
+        "os_version": "",
+        "serial_number": "",
+        "uptime": 0,
+        "interfaces": {},
+        "neighbors": [],
+        "vlans": [],
+        "trunks": [],
+        "svis": [],
+        "routing": false,
+        "existing_acls": [],
+        "username": "rawen",
+        "password": "rawen123",
+        "secret": "cisco",
+        "reachable": false,
+        "error": "Cannot connect to 192.168.1.1",
+        "role": "SITE_CORE"
+      }
+    ]
+  },
+  "network_context": {
+    "vlans": [],
+    "subnets": [],
+    "zones": [],
+    "routing_devices": [],
+    "firewalls": [],
+    "acl_points": []
+  },
+  "ai_context": {
+    "topology_health_inputs": {
+      "device_count": 1,
+      "link_count": 0,
+      "zone_count": 0,
+      "routing_device_count": 0,
+      "firewall_present": false,
+      "acl_candidate_count": 0
+    },
+    "consistency_inputs": {
+      "zones_without_gateway": [],
+      "vlans_without_subnet": [],
+      "subnets_without_zone": [],
+      "isolated_devices": [
+        {
+          "hostname": "CORE-S",
+          "ip": "192.168.1.1",
+          "role": "SITE_CORE",
+          "model": "cisco 2960",
+          "reachable": false
+        }
+      ]
+    },
+    "security_inputs": {
+      "existing_acl_count": 0,
+      "firewall_count": 0,
+      "inter_vlan_routing": false
+    }
+  }
+}

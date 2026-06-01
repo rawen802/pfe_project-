@@ -1,0 +1,1349 @@
+{
+  "site": {
+    "site_name": "cimentb",
+    "core_device": {
+      "hostname": "SW-CORE",
+      "ip": "192.168.99.20",
+      "model": "",
+      "role": "SITE_CORE",
+      "username": "admin",
+      "password": "admin123",
+      "secret": "admin123"
+    }
+  },
+  "summary": {
+    "device_count": 4,
+    "switch_count": 1,
+    "router_count": 0,
+    "firewall_count": 0,
+    "zone_count": 7,
+    "vlan_count": 8,
+    "subnet_count": 7,
+    "acl_candidate_count": 0
+  },
+  "topology": {
+    "devices": [
+      {
+        "hostname": "SW-CORE",
+        "ip": "192.168.99.20",
+        "role": "SITE_CORE",
+        "model": "IOSv",
+        "reachable": true,
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123"
+      },
+      {
+        "hostname": "SW-PRODUCTION",
+        "ip": "192.168.99.22",
+        "role": "UNKNOWN",
+        "model": "IOSv",
+        "reachable": true,
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123"
+      },
+      {
+        "hostname": "SW-ADMIN",
+        "ip": "192.168.99.21",
+        "role": "UNKNOWN",
+        "model": "IOSv",
+        "reachable": true,
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123"
+      },
+      {
+        "hostname": "SW-MEDICAL",
+        "ip": "192.168.99.23",
+        "role": "UNKNOWN",
+        "model": "IOSv",
+        "reachable": true,
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123"
+      }
+    ],
+    "links": [
+      {
+        "source": "SW-CORE",
+        "target": "SW-PRODUCTION.netautoai.local",
+        "source_ip": "192.168.99.20",
+        "target_ip": "192.168.99.22",
+        "local_interface": "GigabitEthernet0/3",
+        "remote_interface": "GigabitEthernet0/3",
+        "protocol": "CDP"
+      },
+      {
+        "source": "SW-CORE",
+        "target": "SW-ADMIN.netautoai.local",
+        "source_ip": "192.168.99.20",
+        "target_ip": "192.168.99.21",
+        "local_interface": "GigabitEthernet0/2",
+        "remote_interface": "GigabitEthernet0/2",
+        "protocol": "CDP"
+      },
+      {
+        "source": "SW-CORE",
+        "target": "SW-MEDICAL.netautoai.local",
+        "source_ip": "192.168.99.20",
+        "target_ip": "192.168.99.23",
+        "local_interface": "GigabitEthernet1/0",
+        "remote_interface": "GigabitEthernet1/0",
+        "protocol": "CDP"
+      },
+      {
+        "source": "SW-PRODUCTION",
+        "target": "SW-CORE.netautoai.local",
+        "source_ip": "192.168.99.22",
+        "target_ip": "192.168.99.20",
+        "local_interface": "GigabitEthernet0/3",
+        "remote_interface": "GigabitEthernet0/3",
+        "protocol": "CDP"
+      },
+      {
+        "source": "SW-ADMIN",
+        "target": "SW-CORE.netautoai.local",
+        "source_ip": "192.168.99.21",
+        "target_ip": "192.168.99.20",
+        "local_interface": "GigabitEthernet0/2",
+        "remote_interface": "GigabitEthernet0/2",
+        "protocol": "CDP"
+      },
+      {
+        "source": "SW-MEDICAL",
+        "target": "SW-CORE.netautoai.local",
+        "source_ip": "192.168.99.23",
+        "target_ip": "192.168.99.20",
+        "local_interface": "GigabitEthernet1/0",
+        "remote_interface": "GigabitEthernet1/0",
+        "protocol": "CDP"
+      }
+    ]
+  },
+  "inventory": {
+    "devices": [
+      {
+        "ip": "192.168.99.20",
+        "hostname": "SW-CORE",
+        "model": "IOSv",
+        "vendor": "Cisco",
+        "os_version": "vios_l2 Software (vios_l2-ADVENTERPRISEK9-M), Experimental Version 15.2(20200924:215240) [sweickge-sep24-2020-l2iol-release 135]",
+        "serial_number": "90Y1W9TR11S",
+        "uptime": 4140.0,
+        "interfaces": {
+          "GigabitEthernet0/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:00",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/1": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "VM-UBUNTU",
+            "mac_address": "0C:FA:CC:78:00:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/2": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "TRUNK-SW-ADMIN",
+            "mac_address": "0C:FA:CC:78:00:02",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/3": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "TRUNK-SW-PRODUCTION",
+            "mac_address": "0C:FA:CC:78:00:03",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/0": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:04",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:05",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:06",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:07",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:08",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:09",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0A",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0B",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0C",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0D",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0E",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:00:0F",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan1": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "",
+            "mac_address": "0C:FA:CC:78:80:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan10": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "Gateway for medical",
+            "mac_address": "0C:FA:CC:78:80:0A",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan20": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "Gateway for production",
+            "mac_address": "0C:FA:CC:78:80:14",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan30": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "Gateway for admin",
+            "mac_address": "0C:FA:CC:78:80:1E",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          }
+        },
+        "neighbors": [
+          {
+            "neighbor_hostname": "SW-PRODUCTION.netautoai.local",
+            "neighbor_ip": "192.168.99.22",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet0/3",
+            "remote_interface": "GigabitEthernet0/3",
+            "protocol": "CDP"
+          },
+          {
+            "neighbor_hostname": "SW-ADMIN.netautoai.local",
+            "neighbor_ip": "192.168.99.21",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet0/2",
+            "remote_interface": "GigabitEthernet0/2",
+            "protocol": "CDP"
+          },
+          {
+            "neighbor_hostname": "SW-MEDICAL.netautoai.local",
+            "neighbor_ip": "192.168.99.23",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet1/0",
+            "remote_interface": "GigabitEthernet1/0",
+            "protocol": "CDP"
+          }
+        ],
+        "vlans": [
+          {
+            "id": 1,
+            "name": "default"
+          },
+          {
+            "id": 10,
+            "name": "medical"
+          },
+          {
+            "id": 20,
+            "name": "production"
+          },
+          {
+            "id": 30,
+            "name": "admin"
+          },
+          {
+            "id": 1002,
+            "name": "fddi-default"
+          },
+          {
+            "id": 1003,
+            "name": "token-ring-default"
+          },
+          {
+            "id": 1004,
+            "name": "fddinet-default"
+          },
+          {
+            "id": 1005,
+            "name": "trnet-default"
+          }
+        ],
+        "trunks": [
+          "Port",
+          "Gi0/2",
+          "Gi0/3",
+          "Gi1/0",
+          "Port",
+          "Gi0/2",
+          "Gi0/3",
+          "Gi1/0",
+          "Port",
+          "Gi0/2",
+          "Gi0/3",
+          "Gi1/0",
+          "Port",
+          "Gi0/2",
+          "Gi0/3",
+          "Gi1/0"
+        ],
+        "svis": [
+          {
+            "vlan": 1,
+            "name": "Vlan1",
+            "ip": "192.168.99.20",
+            "subnet": "192.168.99.0/24",
+            "gateway": "192.168.99.20"
+          },
+          {
+            "vlan": 10,
+            "name": "Vlan10",
+            "ip": "192.168.10.1",
+            "subnet": "192.168.10.0/27",
+            "gateway": "192.168.10.1"
+          },
+          {
+            "vlan": 20,
+            "name": "Vlan20",
+            "ip": "192.168.10.33",
+            "subnet": "192.168.10.32/27",
+            "gateway": "192.168.10.33"
+          },
+          {
+            "vlan": 30,
+            "name": "Vlan30",
+            "ip": "192.168.10.65",
+            "subnet": "192.168.10.64/28",
+            "gateway": "192.168.10.65"
+          }
+        ],
+        "routing": false,
+        "existing_acls": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123",
+        "reachable": true,
+        "role": "SITE_CORE"
+      },
+      {
+        "ip": "192.168.99.22",
+        "hostname": "SW-PRODUCTION",
+        "model": "IOSv",
+        "vendor": "Cisco",
+        "os_version": "vios_l2 Software (vios_l2-ADVENTERPRISEK9-M), Experimental Version 15.2(20200924:215240) [sweickge-sep24-2020-l2iol-release 135]",
+        "serial_number": "9EY7CBOCGVU",
+        "uptime": 2340.0,
+        "interfaces": {
+          "GigabitEthernet0/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:00",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:02",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/3": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "TRUNK-SW-CORE",
+            "mac_address": "0C:CB:08:D3:00:03",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:04",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:05",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:06",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:07",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:08",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:09",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0A",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0B",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0C",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0D",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0E",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:00:0F",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan1": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "",
+            "mac_address": "0C:CB:08:D3:80:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          }
+        },
+        "neighbors": [
+          {
+            "neighbor_hostname": "SW-CORE.netautoai.local",
+            "neighbor_ip": "192.168.99.20",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet0/3",
+            "remote_interface": "GigabitEthernet0/3",
+            "protocol": "CDP"
+          }
+        ],
+        "vlans": [
+          {
+            "id": 1,
+            "name": "default"
+          },
+          {
+            "id": 1002,
+            "name": "fddi-default"
+          },
+          {
+            "id": 1003,
+            "name": "token-ring-default"
+          },
+          {
+            "id": 1004,
+            "name": "fddinet-default"
+          },
+          {
+            "id": 1005,
+            "name": "trnet-default"
+          }
+        ],
+        "trunks": [
+          "Port",
+          "Gi0/3",
+          "Port",
+          "Gi0/3",
+          "Port",
+          "Gi0/3",
+          "Port",
+          "Gi0/3"
+        ],
+        "svis": [
+          {
+            "vlan": 1,
+            "name": "Vlan1",
+            "ip": "192.168.99.22",
+            "subnet": "192.168.99.0/24",
+            "gateway": "192.168.99.22"
+          }
+        ],
+        "routing": false,
+        "existing_acls": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123",
+        "reachable": true,
+        "role": "UNKNOWN"
+      },
+      {
+        "ip": "192.168.99.21",
+        "hostname": "SW-ADMIN",
+        "model": "IOSv",
+        "vendor": "Cisco",
+        "os_version": "vios_l2 Software (vios_l2-ADVENTERPRISEK9-M), Experimental Version 15.2(20200924:215240) [sweickge-sep24-2020-l2iol-release 135]",
+        "serial_number": "99HXSKVUHQV",
+        "uptime": 2460.0,
+        "interfaces": {
+          "GigabitEthernet0/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:00",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/2": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "TRUNK-SW-CORE",
+            "mac_address": "0C:3A:83:37:00:02",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:03",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:04",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:05",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:06",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:07",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:08",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:09",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0A",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0B",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0C",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0D",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0E",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:3A:83:37:00:0F",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan1": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "",
+            "mac_address": "0C:3A:83:37:80:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          }
+        },
+        "neighbors": [
+          {
+            "neighbor_hostname": "SW-CORE.netautoai.local",
+            "neighbor_ip": "192.168.99.20",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet0/2",
+            "remote_interface": "GigabitEthernet0/2",
+            "protocol": "CDP"
+          }
+        ],
+        "vlans": [
+          {
+            "id": 1,
+            "name": "default"
+          },
+          {
+            "id": 1002,
+            "name": "fddi-default"
+          },
+          {
+            "id": 1003,
+            "name": "token-ring-default"
+          },
+          {
+            "id": 1004,
+            "name": "fddinet-default"
+          },
+          {
+            "id": 1005,
+            "name": "trnet-default"
+          }
+        ],
+        "trunks": [
+          "Port",
+          "Gi0/2",
+          "Port",
+          "Gi0/2",
+          "Port",
+          "Gi0/2",
+          "Port",
+          "Gi0/2"
+        ],
+        "svis": [
+          {
+            "vlan": 1,
+            "name": "Vlan1",
+            "ip": "192.168.99.21",
+            "subnet": "192.168.99.0/24",
+            "gateway": "192.168.99.21"
+          }
+        ],
+        "routing": false,
+        "existing_acls": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123",
+        "reachable": true,
+        "role": "UNKNOWN"
+      },
+      {
+        "ip": "192.168.99.23",
+        "hostname": "SW-MEDICAL",
+        "model": "IOSv",
+        "vendor": "Cisco",
+        "os_version": "vios_l2 Software (vios_l2-ADVENTERPRISEK9-M), Experimental Version 15.2(20200924:215240) [sweickge-sep24-2020-l2iol-release 135]",
+        "serial_number": "9CQCGJ04E5T",
+        "uptime": 2160.0,
+        "interfaces": {
+          "GigabitEthernet0/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:00",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:02",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet0/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:03",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/0": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "TRUNK-SW-CORE",
+            "mac_address": "0C:76:EC:A1:00:04",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:05",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:06",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet1/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:07",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:08",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:09",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0A",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet2/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0B",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/0": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0C",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/1": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0D",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/2": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0E",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "GigabitEthernet3/3": {
+            "is_enabled": true,
+            "is_up": false,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:00:0F",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          },
+          "Vlan1": {
+            "is_enabled": true,
+            "is_up": true,
+            "description": "",
+            "mac_address": "0C:76:EC:A1:80:01",
+            "last_flapped": -1.0,
+            "mtu": 1500,
+            "speed": 1000.0
+          }
+        },
+        "neighbors": [
+          {
+            "neighbor_hostname": "SW-CORE.netautoai.local",
+            "neighbor_ip": "192.168.99.20",
+            "platform": "Cisco",
+            "local_interface": "GigabitEthernet1/0",
+            "remote_interface": "GigabitEthernet1/0",
+            "protocol": "CDP"
+          }
+        ],
+        "vlans": [
+          {
+            "id": 1,
+            "name": "default"
+          },
+          {
+            "id": 1002,
+            "name": "fddi-default"
+          },
+          {
+            "id": 1003,
+            "name": "token-ring-default"
+          },
+          {
+            "id": 1004,
+            "name": "fddinet-default"
+          },
+          {
+            "id": 1005,
+            "name": "trnet-default"
+          }
+        ],
+        "trunks": [
+          "Port",
+          "Gi1/0",
+          "Port",
+          "Gi1/0",
+          "Port",
+          "Gi1/0",
+          "Port",
+          "Gi1/0"
+        ],
+        "svis": [
+          {
+            "vlan": 1,
+            "name": "Vlan1",
+            "ip": "192.168.99.23",
+            "subnet": "192.168.99.0/24",
+            "gateway": "192.168.99.23"
+          }
+        ],
+        "routing": false,
+        "existing_acls": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123",
+        "reachable": true,
+        "role": "UNKNOWN"
+      }
+    ]
+  },
+  "network_context": {
+    "vlans": [
+      {
+        "vlan_id": 1,
+        "vlan_name": "default",
+        "devices": [
+          "SW-CORE",
+          "SW-PRODUCTION",
+          "SW-ADMIN",
+          "SW-MEDICAL"
+        ]
+      },
+      {
+        "vlan_id": 10,
+        "vlan_name": "medical",
+        "devices": [
+          "SW-CORE"
+        ]
+      },
+      {
+        "vlan_id": 20,
+        "vlan_name": "production",
+        "devices": [
+          "SW-CORE"
+        ]
+      },
+      {
+        "vlan_id": 30,
+        "vlan_name": "admin",
+        "devices": [
+          "SW-CORE"
+        ]
+      },
+      {
+        "vlan_id": 1002,
+        "vlan_name": "fddi-default",
+        "devices": [
+          "SW-CORE",
+          "SW-PRODUCTION",
+          "SW-ADMIN",
+          "SW-MEDICAL"
+        ]
+      },
+      {
+        "vlan_id": 1003,
+        "vlan_name": "token-ring-default",
+        "devices": [
+          "SW-CORE",
+          "SW-PRODUCTION",
+          "SW-ADMIN",
+          "SW-MEDICAL"
+        ]
+      },
+      {
+        "vlan_id": 1004,
+        "vlan_name": "fddinet-default",
+        "devices": [
+          "SW-CORE",
+          "SW-PRODUCTION",
+          "SW-ADMIN",
+          "SW-MEDICAL"
+        ]
+      },
+      {
+        "vlan_id": 1005,
+        "vlan_name": "trnet-default",
+        "devices": [
+          "SW-CORE",
+          "SW-PRODUCTION",
+          "SW-ADMIN",
+          "SW-MEDICAL"
+        ]
+      }
+    ],
+    "subnets": [
+      {
+        "subnet": "192.168.99.0/24",
+        "vlan_id": 1,
+        "zone_name": "VLAN_1",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan1",
+        "gateway_ip": "192.168.99.20"
+      },
+      {
+        "subnet": "192.168.10.0/27",
+        "vlan_id": 10,
+        "zone_name": "VLAN_10",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan10",
+        "gateway_ip": "192.168.10.1"
+      },
+      {
+        "subnet": "192.168.10.32/27",
+        "vlan_id": 20,
+        "zone_name": "VLAN_20",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan20",
+        "gateway_ip": "192.168.10.33"
+      },
+      {
+        "subnet": "192.168.10.64/28",
+        "vlan_id": 30,
+        "zone_name": "VLAN_30",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan30",
+        "gateway_ip": "192.168.10.65"
+      },
+      {
+        "subnet": "192.168.99.0/24",
+        "vlan_id": 1,
+        "zone_name": "VLAN_1",
+        "gateway_device": "SW-PRODUCTION",
+        "gateway_interface": "Vlan1",
+        "gateway_ip": "192.168.99.22"
+      },
+      {
+        "subnet": "192.168.99.0/24",
+        "vlan_id": 1,
+        "zone_name": "VLAN_1",
+        "gateway_device": "SW-ADMIN",
+        "gateway_interface": "Vlan1",
+        "gateway_ip": "192.168.99.21"
+      },
+      {
+        "subnet": "192.168.99.0/24",
+        "vlan_id": 1,
+        "zone_name": "VLAN_1",
+        "gateway_device": "SW-MEDICAL",
+        "gateway_interface": "Vlan1",
+        "gateway_ip": "192.168.99.23"
+      }
+    ],
+    "zones": [
+      {
+        "zone_name": "VLAN_1",
+        "vlan_id": 1,
+        "subnet": "192.168.99.0/24",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan1"
+      },
+      {
+        "zone_name": "VLAN_10",
+        "vlan_id": 10,
+        "subnet": "192.168.10.0/27",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan10"
+      },
+      {
+        "zone_name": "VLAN_20",
+        "vlan_id": 20,
+        "subnet": "192.168.10.32/27",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan20"
+      },
+      {
+        "zone_name": "VLAN_30",
+        "vlan_id": 30,
+        "subnet": "192.168.10.64/28",
+        "gateway_device": "SW-CORE",
+        "gateway_interface": "Vlan30"
+      },
+      {
+        "zone_name": "VLAN_1",
+        "vlan_id": 1,
+        "subnet": "192.168.99.0/24",
+        "gateway_device": "SW-PRODUCTION",
+        "gateway_interface": "Vlan1"
+      },
+      {
+        "zone_name": "VLAN_1",
+        "vlan_id": 1,
+        "subnet": "192.168.99.0/24",
+        "gateway_device": "SW-ADMIN",
+        "gateway_interface": "Vlan1"
+      },
+      {
+        "zone_name": "VLAN_1",
+        "vlan_id": 1,
+        "subnet": "192.168.99.0/24",
+        "gateway_device": "SW-MEDICAL",
+        "gateway_interface": "Vlan1"
+      }
+    ],
+    "routing_devices": [],
+    "firewalls": [],
+    "acl_points": []
+  },
+  "ai_context": {
+    "topology_health_inputs": {
+      "device_count": 4,
+      "link_count": 6,
+      "zone_count": 7,
+      "routing_device_count": 0,
+      "firewall_present": false,
+      "acl_candidate_count": 0
+    },
+    "consistency_inputs": {
+      "zones_without_gateway": [],
+      "vlans_without_subnet": [
+        {
+          "vlan_id": 1002,
+          "vlan_name": "fddi-default",
+          "devices": [
+            "SW-CORE",
+            "SW-PRODUCTION",
+            "SW-ADMIN",
+            "SW-MEDICAL"
+          ]
+        },
+        {
+          "vlan_id": 1003,
+          "vlan_name": "token-ring-default",
+          "devices": [
+            "SW-CORE",
+            "SW-PRODUCTION",
+            "SW-ADMIN",
+            "SW-MEDICAL"
+          ]
+        },
+        {
+          "vlan_id": 1004,
+          "vlan_name": "fddinet-default",
+          "devices": [
+            "SW-CORE",
+            "SW-PRODUCTION",
+            "SW-ADMIN",
+            "SW-MEDICAL"
+          ]
+        },
+        {
+          "vlan_id": 1005,
+          "vlan_name": "trnet-default",
+          "devices": [
+            "SW-CORE",
+            "SW-PRODUCTION",
+            "SW-ADMIN",
+            "SW-MEDICAL"
+          ]
+        }
+      ],
+      "subnets_without_zone": [],
+      "isolated_devices": []
+    },
+    "security_inputs": {
+      "existing_acl_count": 0,
+      "firewall_count": 0,
+      "inter_vlan_routing": false
+    }
+  }
+}
