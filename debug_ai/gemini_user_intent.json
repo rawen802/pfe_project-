@@ -1,0 +1,6 @@
+{
+  "goal": "analyser le réseau",
+  "allow_services": [],
+  "deny_services": [],
+  "priority": "security"
+}

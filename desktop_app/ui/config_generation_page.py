@@ -30,6 +30,7 @@ class ConfigGenerationPage(QWidget):
         self.ai_analysis_page = ai_analysis_page
 
         self.generated_config = ""
+        self.rendered_configs = {}
 
         self.setup_ui()
 
@@ -50,7 +51,7 @@ class ConfigGenerationPage(QWidget):
         left_layout = QVBoxLayout(left_card)
 
         self.device_combo = QComboBox()
-        self.device_combo.addItems(["SW-CORE-1"])
+        self.populate_device_combo()
 
         btn_layout = QHBoxLayout()
         self.btn_generate = QPushButton("Générer")
@@ -97,10 +98,88 @@ class ConfigGenerationPage(QWidget):
         self.apply_styles()
 
         self.btn_generate.clicked.connect(self.generate_config)
+        self.device_combo.currentTextChanged.connect(self.on_device_changed)
         self.btn_copy.clicked.connect(self.copy_config)
         self.btn_clear.clicked.connect(self.clear)
         self.btn_save.clicked.connect(self.save)
         self.btn_ai.clicked.connect(self.go_ai)
+
+    def clean_device_name(self, value):
+        if value is None:
+            return ""
+
+        if isinstance(value, list):
+            if not value:
+                return ""
+            value = value[0]
+
+        if isinstance(value, dict):
+            return str(value.get("hostname") or value.get("name") or "").strip()
+
+        text = str(value).strip()
+
+        if "," in text:
+            return text.split(",")[0].strip()
+
+        return text
+
+    def populate_device_combo(self):
+        self.device_combo.clear()
+
+        devices = []
+
+        for item in self.final_plan:
+            if not isinstance(item, dict):
+                continue
+
+            sw = self.clean_device_name(item.get("switches"))
+            svi = self.clean_device_name(item.get("svi"))
+
+            if sw and sw not in devices:
+                devices.append(sw)
+
+            if svi and svi not in devices:
+                devices.append(svi)
+
+        if not devices:
+            devices = ["Aucun équipement"]
+
+        self.device_combo.addItems(devices)
+
+    def refresh_device_combo_from_configs(self):
+        if not isinstance(self.rendered_configs, dict) or not self.rendered_configs:
+            return
+
+        current = self.device_combo.currentText()
+        config_devices = list(self.rendered_configs.keys())
+
+        self.device_combo.blockSignals(True)
+        self.device_combo.clear()
+        self.device_combo.addItems(config_devices)
+
+        if current in config_devices:
+            self.device_combo.setCurrentText(current)
+        elif config_devices:
+            self.device_combo.setCurrentText(config_devices[0])
+
+        self.device_combo.blockSignals(False)
+
+    def on_device_changed(self):
+        selected_device = self.device_combo.currentText()
+
+        if isinstance(self.rendered_configs, dict) and selected_device in self.rendered_configs:
+            self.generated_config = self.rendered_configs[selected_device]
+            self.preview.setText(self.generated_config)
+
+            vlan_count = len(self.final_plan)
+
+            self.summary.setText(
+                f"Statut : Généré\n"
+                f"VLANs : {vlan_count}\n"
+                f"Équipement : {selected_device}"
+            )
+
+            self.log(f"Configuration affichée : {selected_device}")
 
     def apply_styles(self):
         self.setStyleSheet("""
@@ -188,7 +267,9 @@ class ConfigGenerationPage(QWidget):
             requested_zones.append({
                 "zone_name": zone_name,
                 "vlan_name": vlan_name,
-                "required_hosts": required_hosts
+                "required_hosts": required_hosts,
+                "target_switch": item.get("switches"),
+                "svi": item.get("svi")
             })
 
             requirements.append({
@@ -208,6 +289,21 @@ class ConfigGenerationPage(QWidget):
         if not isinstance(data, dict):
             return None
 
+        rendered_configs = data.get("rendered_configs")
+
+        if isinstance(rendered_configs, dict) and rendered_configs:
+            self.rendered_configs = rendered_configs
+            self.refresh_device_combo_from_configs()
+
+            selected_device = self.device_combo.currentText()
+
+            if selected_device in rendered_configs:
+                return rendered_configs[selected_device]
+
+            first_device = next(iter(rendered_configs.keys()))
+            self.device_combo.setCurrentText(first_device)
+            return rendered_configs[first_device]
+
         config = (
             data.get("config")
             or data.get("generated_config")
@@ -217,11 +313,10 @@ class ConfigGenerationPage(QWidget):
         )
 
         if config:
+            self.rendered_configs = {
+                self.device_combo.currentText() or "CONFIG": config
+            }
             return config
-
-        rendered_configs = data.get("rendered_configs")
-        if isinstance(rendered_configs, dict) and rendered_configs:
-            return list(rendered_configs.values())[0]
 
         return None
 
@@ -265,10 +360,12 @@ class ConfigGenerationPage(QWidget):
 
             vlan_count = len(self.final_plan)
 
+            selected_device = self.device_combo.currentText()
+
             self.summary.setText(
                 f"Statut : Généré\n"
                 f"VLANs : {vlan_count}\n"
-                f"Équipement : SW-CORE-1"
+                f"Équipement : {selected_device}"
             )
             self.validation.setText("Prêt pour validation AI")
 
@@ -302,7 +399,7 @@ class ConfigGenerationPage(QWidget):
         path, _ = QFileDialog.getSaveFileName(
             self,
             "Enregistrer configuration Cisco",
-            "config.cfg",
+            f"{self.device_combo.currentText() or 'config'}.cfg",
             "Cisco Config (*.cfg);;Text Files (*.txt)"
         )
 
@@ -365,6 +462,7 @@ class ConfigGenerationPage(QWidget):
                 report=self.report,
                 final_plan=self.final_plan,
                 generated_config=self.generated_config,
+                rendered_configs=self.rendered_configs,
                 base_network=self.base_network
             )
         # Compatibilité avec une ancienne méthode possible.

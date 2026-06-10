@@ -95,7 +95,49 @@ def process_vlan_requests(report: dict, requested_zones: list):
     }
 
     existing_vlans = get_existing_vlans(report)
-    next_vlan_id = suggest_next_vlan_id(report)
+
+    used_ids = set()
+    vlan_by_zone = {}
+    vlan_by_name = {}
+
+    for vlan in existing_vlans:
+        vlan_id = vlan.get("vlan_id")
+        vlan_name = (
+            vlan.get("vlan_name")
+            or vlan.get("name")
+            or vlan.get("zone")
+            or ""
+        )
+
+        zone = (
+            vlan.get("zone_name")
+            or vlan.get("zone")
+            or vlan_name
+            or ""
+        )
+
+        try:
+            vlan_id = int(vlan_id)
+        except Exception:
+            continue
+
+        used_ids.add(vlan_id)
+
+        if zone:
+            vlan_by_zone[zone.upper()] = {
+                "vlan_id": vlan_id,
+                "vlan_name": vlan_name or zone
+            }
+
+        if vlan_name:
+            vlan_by_name[vlan_name.upper()] = {
+                "vlan_id": vlan_id,
+                "vlan_name": vlan_name
+            }
+
+    next_vlan_id = 10
+    while next_vlan_id in used_ids:
+        next_vlan_id += 10
 
     for item in requested_zones:
         zone_name = item.get("zone_name")
@@ -106,29 +148,39 @@ def process_vlan_requests(report: dict, requested_zones: list):
             result["errors"].append("zone_name is required")
             continue
 
+        zone_key = str(zone_name).upper()
+        vlan_key = str(vlan_name).upper()
+
+        existing_match = vlan_by_zone.get(zone_key) or vlan_by_name.get(vlan_key)
+
+        if existing_match:
+            selected_vlan_id = existing_match["vlan_id"]
+            selected_vlan_name = existing_match["vlan_name"] or vlan_name
+            reason = "existing VLAN reused from discovery report"
+        else:
+            selected_vlan_id = next_vlan_id
+            selected_vlan_name = vlan_name
+            reason = "new VLAN for business zone"
+
+            used_ids.add(selected_vlan_id)
+            while next_vlan_id in used_ids:
+                next_vlan_id += 10
+
         targets = choose_vlan_targets(report, zone_name)
 
         vlan_data = {
             "operation": "create",
             "zone_name": zone_name,
-            "vlan_id": next_vlan_id,
-            "vlan_name": vlan_name,
+            "vlan_id": selected_vlan_id,
+            "vlan_name": selected_vlan_name,
             "required_hosts": required_hosts,
             "deploy_on": targets["access_switches"],
             "core_switches": targets["core_switches"],
             "needs_trunk_update": True,
             "needs_svi": True,
-            "reason": "new VLAN for business zone"
+            "reason": reason
         }
 
         result["created"].append(vlan_data)
-
-        existing_vlans.append({
-            "vlan_id": next_vlan_id,
-            "vlan_name": vlan_name,
-            "zone": zone_name
-        })
-
-        next_vlan_id += 10
 
     return result

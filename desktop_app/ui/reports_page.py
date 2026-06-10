@@ -80,10 +80,7 @@ class ReportsPage(QWidget):
             color: white;
         """)
 
-        subtitle = QLabel(
-            "Gestion et génération des rapports réseau globaux"
-        )
-
+        subtitle = QLabel("Gestion et génération des rapports réseau globaux")
         subtitle.setStyleSheet("""
             color: #94a3b8;
             font-size: 14px;
@@ -116,9 +113,7 @@ class ReportsPage(QWidget):
         main_layout.addLayout(button_layout)
 
         self.table = QTableWidget()
-
         self.table.setColumnCount(4)
-
         self.table.setHorizontalHeaderLabels([
             "ID",
             "Nom du rapport",
@@ -126,22 +121,11 @@ class ReportsPage(QWidget):
             "Date"
         ])
 
-        self.table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.Stretch
-        )
-
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.verticalHeader().setVisible(False)
-
         self.table.setShowGrid(False)
-
-        self.table.setSelectionBehavior(
-            QAbstractItemView.SelectRows
-        )
-
-        self.table.setEditTriggers(
-            QAbstractItemView.NoEditTriggers
-        )
-
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.setMinimumHeight(520)
 
         main_layout.addWidget(self.table)
@@ -178,27 +162,68 @@ class ReportsPage(QWidget):
         if not pdf_path:
             return
 
-        pdf_path = os.path.abspath(pdf_path)
+        raw_path = str(pdf_path).strip()
+        base_name = os.path.basename(raw_path)
 
-        if not os.path.exists(pdf_path):
+        if not raw_path.lower().endswith(".pdf"):
+            raw_path_pdf = raw_path + ".pdf"
+        else:
+            raw_path_pdf = raw_path
 
+        if not base_name.lower().endswith(".pdf"):
+            base_name_pdf = base_name + ".pdf"
+        else:
+            base_name_pdf = base_name
+
+        project_root = os.getcwd()
+
+        candidates = [
+             raw_path,
+             raw_path_pdf,
+
+             os.path.join(project_root, raw_path),
+             os.path.join(project_root, raw_path_pdf),
+
+             # generated_reports dans le dossier courant
+             os.path.join(project_root, "generated_reports", base_name),
+             os.path.join(project_root, "generated_reports", base_name_pdf),
+
+             # generated_reports à la racine du projet
+             os.path.join(project_root, "..", "generated_reports", base_name),
+             os.path.join(project_root, "..", "generated_reports", base_name_pdf),
+
+             # ancien emplacement desktop_app/generated_reports
+             os.path.join(project_root, "desktop_app", "generated_reports", base_name),
+             os.path.join(project_root, "desktop_app", "generated_reports", base_name_pdf),
+        ]
+
+        pdf_path_found = None
+
+        for candidate in candidates:
+            candidate = os.path.abspath(candidate)
+
+            if os.path.exists(candidate):
+                pdf_path_found = candidate
+                break
+
+        if not pdf_path_found:
             QMessageBox.warning(
                 self,
                 "PDF introuvable",
-                f"Le fichier PDF est introuvable :\n{pdf_path}"
+                "Le fichier PDF est introuvable.\n\nChemins testés :\n"
+                + "\n".join([os.path.abspath(c) for c in candidates])
             )
-
             return
 
         try:
 
             if sys.platform.startswith("win"):
 
-                os.startfile(pdf_path)
+                os.startfile(pdf_path_found)
 
             elif hasattr(os, "uname") and "microsoft" in os.uname().release.lower():
 
-                windows_path = pdf_path.replace(
+                windows_path = pdf_path_found.replace(
                     "/mnt/c/",
                     "C:/"
                 ).replace("/", "\\")
@@ -212,14 +237,14 @@ class ReportsPage(QWidget):
 
                 subprocess.Popen([
                     "xdg-open",
-                    pdf_path
+                    pdf_path_found
                 ])
 
             elif sys.platform.startswith("darwin"):
 
                 subprocess.Popen([
                     "open",
-                    pdf_path
+                    pdf_path_found
                 ])
 
         except Exception as e:
@@ -227,7 +252,7 @@ class ReportsPage(QWidget):
             QMessageBox.warning(
                 self,
                 "Ouverture PDF",
-                f"PDF généré, mais ouverture automatique impossible.\n{str(e)}"
+                f"PDF trouvé, mais ouverture automatique impossible.\n{str(e)}\n\nChemin :\n{pdf_path_found}"
             )
 
     def generate_report(self):
@@ -235,7 +260,6 @@ class ReportsPage(QWidget):
         try:
 
             response = self.api_client.generate_global_report()
-
             data = self.extract_data(response)
 
             if data.get("status") == "success":
@@ -269,30 +293,27 @@ class ReportsPage(QWidget):
         try:
 
             response = self.api_client.get_reports()
-
             data = self.extract_data(response)
 
             reports = data.get("reports", [])
+
+            # Correction safe :
+            # on affiche seulement les rapports globaux JSON exportables en PDF.
+            # Les anciennes entrées invalides comme "discovery_report_siege"
+            # restent en base mais ne sont plus affichées.
+            reports = [
+                report for report in reports
+                if str(report.get("report_name", "")).lower().endswith(".json")
+            ]
 
             self.table.setRowCount(len(reports))
 
             for row, report in enumerate(reports):
 
-                item_id = QTableWidgetItem(
-                    str(report.get("id", ""))
-                )
-
-                item_name = QTableWidgetItem(
-                    report.get("report_name", "")
-                )
-
-                item_user = QTableWidgetItem(
-                    str(report.get("user_id", ""))
-                )
-
-                item_date = QTableWidgetItem(
-                    report.get("created_at", "")
-                )
+                item_id = QTableWidgetItem(str(report.get("id", "")))
+                item_name = QTableWidgetItem(report.get("report_name", ""))
+                item_user = QTableWidgetItem(str(report.get("user_id", "")))
+                item_date = QTableWidgetItem(report.get("created_at", ""))
 
                 item_id.setTextAlignment(Qt.AlignCenter)
                 item_user.setTextAlignment(Qt.AlignCenter)
@@ -336,7 +357,6 @@ class ReportsPage(QWidget):
             report_id = int(report_id_item.text())
 
             response = self.api_client.export_report_pdf(report_id)
-
             data = self.extract_data(response)
 
             if data.get("status") == "success":

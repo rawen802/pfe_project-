@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.database.database import connect_db, add_log
 from core.gestion_utilisateurs.security import get_current_user
+import json
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
@@ -36,6 +37,63 @@ def get_row_value(row, key, index, default=None):
             return default
 
 
+def get_last_architecture_counts(cursor, user_id):
+    device_count = 0
+    link_count = 0
+    vlan_count = 0
+
+    try:
+        cursor.execute(
+            """
+            SELECT report_json
+            FROM architecture_reports
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (user_id,)
+        )
+
+        row = cursor.fetchone()
+
+        if not row:
+            return device_count, link_count, vlan_count
+
+        report_json_raw = get_row_value(row, "report_json", 0, "{}")
+
+        if isinstance(report_json_raw, str):
+            report = json.loads(report_json_raw)
+        else:
+            report = report_json_raw
+
+        summary = report.get("summary", {})
+        topology = report.get("topology", {})
+        network_context = report.get("network_context", {})
+
+        device_count = int(
+            summary.get("device_count")
+            or len(topology.get("devices", []))
+            or 0
+        )
+
+        link_count = int(
+            summary.get("link_count")
+            or len(topology.get("links", []))
+            or 0
+        )
+
+        vlan_count = int(
+            summary.get("vlan_count")
+            or len(network_context.get("vlans", []))
+            or 0
+        )
+
+    except Exception as e:
+        print("Erreur last architecture summary:", e)
+
+    return device_count, link_count, vlan_count
+
+
 @router.get("/summary")
 def dashboard_summary(current_user: dict = Depends(get_current_user)):
     conn = connect_db()
@@ -45,9 +103,11 @@ def dashboard_summary(current_user: dict = Depends(get_current_user)):
         user_id = current_user["id"]
 
         users_count = safe_count(cursor, "users")
-        device_count = safe_count(cursor, "devices")
-        link_count = safe_count(cursor, "links")
-        vlan_count = safe_count(cursor, "vlans")
+
+        device_count, link_count, vlan_count = get_last_architecture_counts(
+            cursor,
+            user_id
+        )
 
         try:
             cursor.execute(
@@ -148,11 +208,6 @@ def dashboard_summary(current_user: dict = Depends(get_current_user)):
             critical_percent = int(round((critical_count / total_alerts) * risk_percent))
             warning_percent = risk_percent - critical_percent
             unknown_percent = 0
-
-        healthy_percent = max(0, min(100, healthy_percent))
-        warning_percent = max(0, min(100, warning_percent))
-        critical_percent = max(0, min(100, critical_percent))
-        unknown_percent = max(0, min(100, unknown_percent))
 
         result = {
             "success": True,

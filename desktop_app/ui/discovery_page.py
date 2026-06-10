@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
     QDialog, QScrollArea, QTabWidget, QTableWidget,
     QTableWidgetItem, QHeaderView, QComboBox, QMessageBox
 )
-from PySide6.QtCore import Qt, QRectF, QTimer, QSize
+from PySide6.QtCore import Qt, QRectF, QTimer, QSize, QThread, Signal
 from PySide6.QtGui import QBrush, QColor, QPen, QPainter, QIcon
 
 from services.api_client import ApiClient
@@ -32,6 +32,85 @@ def get_notification_icon_path():
 
 
 icon_path = get_notification_icon_path()
+
+
+def normalize_device_role(device: dict) -> str:
+    """
+    Normalise le rôle affiché dans la topologie.
+
+    Objectif principal :
+    - Un routeur découvert via pfSense/LLDP peut arriver côté frontend avec
+      role absent, UNKNOWN ou NODE.
+    - On force alors ROUTER à partir du hostname/model/platform.
+    - Les switches SW-* restent SWITCH/ACCESS_SWITCH/CORE_SWITCH et ne sont
+      pas transformés en ROUTER même s'ils annoncent une capability Router.
+    """
+    if not isinstance(device, dict):
+        return "UNKNOWN"
+
+    role = str(device.get("role") or "").strip().upper()
+    hostname = str(device.get("hostname") or device.get("name") or "").strip()
+    model = str(device.get("model") or "").strip()
+    platform = str(device.get("platform") or device.get("vendor") or "").strip()
+
+    hostname_upper = hostname.upper()
+    text = f"{hostname} {model} {platform} {role}".lower()
+
+    # Priorité aux switches : un switch L3 peut annoncer Router en LLDP,
+    # mais visuellement il doit rester SWITCH.
+    if hostname_upper.startswith("SW-") or "switch" in text or "catalyst" in text:
+        if "core" in hostname_upper.lower() or "core" in text:
+            return "CORE_SWITCH"
+        if "distribution" in text or "dist" in text:
+            return "DISTRIBUTION_SWITCH"
+        if "access" in text:
+            return "ACCESS_SWITCH"
+        return "SWITCH"
+
+    # Firewalls.
+    if "firewall" in text or "pfsense" in text or "opnsense" in text or "freebsd" in text:
+        return "FIREWALL"
+
+    # Routeurs.
+    if (
+        role in ["ROUTER", "EDGE_ROUTER"]
+        or hostname_upper.startswith("R-")
+        or hostname_upper.startswith("R1")
+        or "router" in text
+        or "internet" in text
+        or "7206" in text
+        or "7200" in text
+        or "2811" in text
+        or "1921" in text
+        or "2901" in text
+        or "2911" in text
+        or "1941" in text
+        or "4331" in text
+    ):
+        return "ROUTER"
+
+    if role and role not in ["UNKNOWN", "NODE", "NONE", "NULL", "-"]:
+        return role
+
+    return "UNKNOWN"
+
+
+
+class DiscoveryWorker(QThread):
+    finished_signal = Signal(dict)
+    error_signal = Signal(str)
+
+    def __init__(self, api, payload):
+        super().__init__()
+        self.api = api
+        self.payload = payload
+
+    def run(self):
+        try:
+            result = self.api.discover_network(self.payload)
+            self.finished_signal.emit(result)
+        except Exception as e:
+            self.error_signal.emit(str(e))
 
 
 class GraphView(QGraphicsView):
@@ -77,7 +156,8 @@ class NodeItem(QGraphicsItem):
         self.on_click_callback = on_click_callback
 
         self.hostname = device.get("hostname", "device")
-        self.role = device.get("role", "UNKNOWN")
+        self.role = normalize_device_role(device)
+        self.device["role"] = self.role
         self.reachable = device.get("reachable", False)
 
         self.base_color = self.get_role_color()
@@ -207,10 +287,28 @@ class NodeItem(QGraphicsItem):
         self.timer.timeout.connect(self.toggle_down_pulse)
         self.timer.start(650)
 
+    def stop_timer(self):
+        """
+        Arrête le timer du NodeItem avant la suppression de la scène.
+
+        Correction du bug :
+        RuntimeError: libshiboken: Internal C++ object (NodeItem) already deleted
+        """
+        try:
+            if hasattr(self, "timer") and self.timer:
+                self.timer.stop()
+                self.timer.deleteLater()
+                self.timer = None
+        except RuntimeError:
+            self.timer = None
+
     def toggle_down_pulse(self):
-        self.pulse_state = not self.pulse_state
-        self.border_color = QColor("#ef4444") if self.pulse_state else QColor("#ffffff")
-        self.update()
+        try:
+            self.pulse_state = not self.pulse_state
+            self.border_color = QColor("#ef4444") if self.pulse_state else QColor("#ffffff")
+            self.update()
+        except RuntimeError:
+            self.stop_timer()
 
     def mark_alert(self):
         self.base_color = QColor("#ef4444")
@@ -245,6 +343,8 @@ class DiscoveryPage(QWidget):
         self.node_map = {}
         self.current_report = {}
         self.discovery_report = {}
+        self.last_discovery_payload = None
+        self.discovery_worker = None
 
         # Ces références seront reliées depuis main_window.py
         # Exemple : self.discovery_page.acl_page = self.acl_page
@@ -857,7 +957,58 @@ class DiscoveryPage(QWidget):
         btn_launch.clicked.connect(launch)
         dialog.exec()
 
+    def build_payload_from_current_report(self):
+        """
+        Reconstruit automatiquement le payload de découverte à partir
+        du rapport actuellement chargé.
+
+        Objectif :
+        - Si l'utilisateur a chargé une architecture sauvegardée,
+          le bouton Actualiser peut relancer une vraie découverte
+          sans ressaisir IP / username / password.
+        """
+        report = self.current_report or self.discovery_report or {}
+
+        site = report.get("site", {})
+        site_name = site.get("site_name", "SITE")
+
+        core_device = site.get("core_device", {}) or {}
+
+        # Fallback : prendre le premier équipement de la topologie
+        if not core_device:
+            devices = report.get("topology", {}).get("devices", [])
+            if devices:
+                core_device = devices[0]
+
+        ip = core_device.get("ip")
+        username = core_device.get("username")
+        password = core_device.get("password")
+        secret = core_device.get("secret") or password
+
+        if not ip or not username or not password:
+            return None
+
+        return {
+            "site_name": site_name,
+            "seed_device": {
+                "hostname": core_device.get("hostname", "UNKNOWN"),
+                "ip": ip,
+                "username": username,
+                "password": password,
+                "secret": secret,
+                "model": core_device.get("model", "")
+            }
+        }
+
     def refresh_graph(self):
+        """
+        Bouton Actualiser.
+
+        Nouvelle logique :
+        - Si un payload de découverte existe, relancer une vraie découverte.
+        - Sinon, reconstruire le payload depuis le rapport chargé.
+        - Si impossible, recharger seulement le rapport sauvegardé.
+        """
         permissions = self.user_data.get("permissions", [])
 
         if "architecture_list" not in permissions:
@@ -868,10 +1019,18 @@ class DiscoveryPage(QWidget):
             )
             return
 
+        # 1) Priorité : relancer une vraie découverte réseau
+        payload = self.last_discovery_payload or self.build_payload_from_current_report()
+
+        if payload:
+            self.report_status.setText("Actualisation : nouvelle découverte en cours...")
+            self.show_scene_message("Actualisation de l’architecture en cours...", "#38bdf8")
+            self.run_discovery(payload)
+            return
+
+        # 2) Fallback : recharger le rapport sauvegardé sélectionné
         report_id = self.site_selector.currentData()
 
-        # Cas 1 : un site sauvegardé est sélectionné
-        # On recharge le report depuis la base SQLite via backend
         if report_id:
             result = self.api.get_architecture_by_id(report_id)
 
@@ -889,21 +1048,19 @@ class DiscoveryPage(QWidget):
             self.discovery_report = report
 
             self.draw_graph({"report": report})
-            self.report_status.setText("Architecture actualisée depuis la base")
-
+            self.report_status.setText("Architecture rechargée depuis la base")
             self.send_report_to_connected_pages(report)
-
             return
 
-        # Cas 2 : aucun site sélectionné, on recharge la liste des sites
+        # 3) Dernier fallback : recharger seulement la liste
         self.load_saved_sites()
 
         if self.current_report:
             self.draw_graph({"report": self.current_report})
             self.send_report_to_connected_pages(self.current_report)
-            self.report_status.setText("Graphe actualisé")
+            self.report_status.setText("Graphe actualisé depuis les données locales")
         else:
-            self.show_scene_message("Aucun site sélectionné à actualiser", "#facc15")
+            self.show_scene_message("Aucun site chargé à actualiser", "#facc15")
             self.report_status.setText("Aucun site chargé")
 
     def on_ws_status_changed(self, status):
@@ -971,6 +1128,10 @@ class DiscoveryPage(QWidget):
         dialog.exec()
 
     def run_discovery(self, payload):
+        """
+        Lance la découverte réseau dans un QThread pour éviter
+        de bloquer l'interface PySide6 pendant les appels API/SSH/NAPALM.
+        """
         permissions = self.user_data.get("permissions", [])
         role = self.user_data.get("role", "").lower()
 
@@ -982,11 +1143,30 @@ class DiscoveryPage(QWidget):
             )
             return
 
-        self.show_scene_message("Découverte réseau en cours...", "#38bdf8")
+        if self.discovery_worker is not None and self.discovery_worker.isRunning():
+            QMessageBox.information(
+                self,
+                "Découverte en cours",
+                "Une découverte réseau est déjà en cours. Veuillez attendre la fin du traitement."
+            )
+            return
 
+        self.last_discovery_payload = payload
+
+        self.btn_discover.setEnabled(False)
+        self.btn_refresh.setEnabled(False)
+
+        self.report_status.setText("Découverte réseau en cours...")
+        self.show_scene_message("Découverte réseau en cours...\nVeuillez patienter.", "#38bdf8")
+
+        self.discovery_worker = DiscoveryWorker(self.api, payload)
+        self.discovery_worker.finished_signal.connect(self.on_discovery_finished)
+        self.discovery_worker.error_signal.connect(self.on_discovery_error)
+        self.discovery_worker.finished.connect(self.on_discovery_thread_finished)
+        self.discovery_worker.start()
+
+    def on_discovery_finished(self, result):
         try:
-            result = self.api.discover_network(payload)
-
             if not result.get("success"):
                 error = result.get("error", "Erreur inconnue")
                 self.show_scene_message(f"Erreur API : {error}", "#ef4444")
@@ -1012,25 +1192,48 @@ class DiscoveryPage(QWidget):
                 self.report_status.setText("Rapport chargé - aucune page connectée")
 
         except Exception as e:
-            self.show_scene_message(f"Erreur connexion backend : {e}", "#ef4444")
-            self.report_status.setText("Erreur connexion backend")
+            self.show_scene_message(f"Erreur traitement résultat : {e}", "#ef4444")
+            self.report_status.setText("Erreur traitement résultat")
+
+    def on_discovery_error(self, error):
+        self.show_scene_message(f"Erreur connexion backend : {error}", "#ef4444")
+        self.report_status.setText("Erreur connexion backend")
+
+    def on_discovery_thread_finished(self):
+        self.btn_discover.setEnabled(True)
+        self.btn_refresh.setEnabled(True)
+        self.discovery_worker = None
+
+    def clear_scene_safely(self):
+        """
+        Nettoie la scène en arrêtant d'abord les timers des NodeItem.
+
+        Sans cette méthode, un ancien NodeItem supprimé par scene.clear()
+        peut continuer à recevoir le signal de son QTimer.
+        """
+        for item in self.scene.items():
+            if isinstance(item, NodeItem):
+                item.stop_timer()
+
+        self.scene.clear()
 
     def show_start_message(self):
-        self.scene.clear()
+        self.clear_scene_safely()
         text = QGraphicsTextItem("Clique sur 'Nouvelle découverte' pour commencer")
         text.setDefaultTextColor(QColor("#38bdf8"))
         text.setPos(260, 260)
         self.scene.addItem(text)
 
     def show_scene_message(self, message, color="#38bdf8"):
-        self.scene.clear()
+        self.clear_scene_safely()
         text = QGraphicsTextItem(message)
         text.setDefaultTextColor(QColor(color))
         text.setPos(260, 260)
         self.scene.addItem(text)
 
     def get_node_position(self, device, index_by_role):
-        role = device.get("role", "UNKNOWN")
+        role = normalize_device_role(device)
+        device["role"] = role
 
         layout_map = {
             "SITE_CORE": 120,
@@ -1056,7 +1259,7 @@ class DiscoveryPage(QWidget):
         return x, y
 
     def draw_graph(self, data):
-        self.scene.clear()
+        self.clear_scene_safely()
         self.node_map = {}
 
         report = data.get("report", {})
@@ -1064,6 +1267,7 @@ class DiscoveryPage(QWidget):
 
         topology = report.get("topology", {})
         devices = topology.get("devices", [])
+        devices = [dict(device, role=normalize_device_role(device)) for device in devices]
         links = topology.get("links", [])
 
         site = report.get("site", {})
@@ -1128,7 +1332,8 @@ class DiscoveryPage(QWidget):
         for device in devices:
             hostname = device.get("hostname", "-")
             ip = device.get("ip", "-")
-            role = device.get("role", "UNKNOWN")
+            role = normalize_device_role(device)
+            device["role"] = role
             reachable = device.get("reachable", False)
 
             status_dot = "🟢" if reachable else "🔴"
@@ -1222,7 +1427,7 @@ class DiscoveryPage(QWidget):
 
         self.info_hostname.setText(f"Hostname : {device.get('hostname', '-')}")
         self.info_ip.setText(f"IP : {device.get('ip', '-')}")
-        self.info_role.setText(f"Rôle : {device.get('role', '-')}")
+        self.info_role.setText(f"Rôle : {normalize_device_role(device)}")
         self.info_model.setText(f"Modèle : {device.get('model', '-')}")
         self.info_status.setText(f"État : {status}")
         self.info_vlans.setText(f"VLANs : {vlan_count}")

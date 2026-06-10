@@ -2,7 +2,7 @@ import requests
 import json
 import os
 
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, QThread, Signal
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout,
@@ -41,6 +41,56 @@ def icon_path(file_name: str) -> str:
 ICON_SIZE = QSize(20, 20)
 
 
+
+class APIRequestWorker(QThread):
+    success = Signal(dict)
+    failed = Signal(str)
+
+    def __init__(self, method: str, url: str, payload=None, timeout: int = 180):
+        super().__init__()
+        self.method = method.upper()
+        self.url = url
+        self.payload = payload
+        self.timeout = timeout
+
+    def run(self):
+        try:
+            if self.method == "POST":
+                response = requests.post(
+                    self.url,
+                    json=self.payload,
+                    timeout=self.timeout
+                )
+            elif self.method == "GET":
+                response = requests.get(
+                    self.url,
+                    timeout=self.timeout
+                )
+            else:
+                self.failed.emit(f"Unsupported HTTP method: {self.method}")
+                return
+
+            if response.status_code != 200:
+                self.failed.emit(response.text)
+                return
+
+            try:
+                self.success.emit(response.json())
+            except Exception:
+                self.failed.emit("Réponse API invalide : JSON non exploitable.")
+
+        except requests.exceptions.ReadTimeout:
+            self.failed.emit(
+                f"Timeout API : le backend n'a pas répondu après {self.timeout} secondes."
+            )
+        except requests.exceptions.ConnectionError:
+            self.failed.emit(
+                "Impossible de se connecter au backend FastAPI. Vérifie que uvicorn est lancé."
+            )
+        except Exception as e:
+            self.failed.emit(str(e))
+
+
 class AIAnalysisPage(QWidget):
     def __init__(self, user_data=None, discovery_report=None, api_client=None):
         super().__init__()
@@ -57,6 +107,7 @@ class AIAnalysisPage(QWidget):
         self.current_fixes = []
         self.acl_fixes = []
         self.vlan_fixes = []
+        self.api_workers = []
 
         self.intent_validated = False
         self.user_intents = []
@@ -557,6 +608,7 @@ class AIAnalysisPage(QWidget):
     # GLOBAL API
     # ======================================================
 
+
     def run_ai_validation(self):
         report = self.get_current_report()
         final_intent = self.get_final_user_intent()
@@ -583,31 +635,13 @@ class AIAnalysisPage(QWidget):
             "discovery_report": report
         }
 
-        try:
-            self.status_label.setText("Analyse en cours...")
-
-            response = requests.post(f"{API_URL}/ai/validate", json=payload, timeout=120)
-
-            if response.status_code != 200:
-                QMessageBox.critical(self, "Erreur API", response.text)
-                self.status_label.setText("Agent Active")
-                return
-
-            data = response.json()
-            analysis = self.extract_analysis_payload(data)
-
-            if not analysis:
-                QMessageBox.warning(self, "Réponse AI vide", "Le backend a répondu, mais aucun bloc analysis exploitable n'a été trouvé.")
-                self.status_label.setText("Agent Active")
-                return
-
-            self.display_analysis(analysis)
-            self.load_score_history()
-            self.status_label.setText("Agent Active")
-
-        except Exception as e:
-            self.status_label.setText("Agent Active")
-            QMessageBox.critical(self, "Erreur", str(e))
+        self.start_api_post(
+            endpoint="/ai/validate",
+            payload=payload,
+            timeout=180,
+            status_text="Analyse globale en cours...",
+            success_callback=self.on_global_ai_success
+        )
 
     def display_analysis(self, analysis):
         issues = analysis.get("issues", [])
@@ -710,6 +744,7 @@ class AIAnalysisPage(QWidget):
         self.acl_score.setValue(0)
         self.acl_status.setText("Statut : -")
 
+
     def run_acl_validation(self):
         report = self.get_current_report()
         acl_plan = self.app_state.get("acl_plan")
@@ -737,30 +772,13 @@ class AIAnalysisPage(QWidget):
             "generated_config": generated_config
         }
 
-        try:
-            self.status_label.setText("Validation ACL en cours...")
-
-            response = requests.post(f"{API_URL}/ai/validate", json=payload, timeout=120)
-
-            if response.status_code != 200:
-                QMessageBox.critical(self, "Erreur API", response.text)
-                self.status_label.setText("Agent Active")
-                return
-
-            data = response.json()
-            analysis = self.extract_analysis_payload(data)
-
-            if not analysis:
-                QMessageBox.warning(self, "Réponse AI vide", "Le backend a répondu, mais aucun bloc analysis ACL exploitable n'a été trouvé.")
-                self.status_label.setText("Agent Active")
-                return
-
-            self.display_acl_analysis(analysis)
-            self.status_label.setText("Agent Active")
-
-        except Exception as e:
-            self.status_label.setText("Agent Active")
-            QMessageBox.critical(self, "Erreur", str(e))
+        self.start_api_post(
+            endpoint="/ai/validate",
+            payload=payload,
+            timeout=180,
+            status_text="Validation ACL en cours...",
+            success_callback=self.on_acl_ai_success
+        )
 
     def display_acl_analysis(self, analysis):
         raw_issues = analysis.get("issues", [])
@@ -1019,7 +1037,7 @@ class AIAnalysisPage(QWidget):
     # VLAN VALIDATION
     # ======================================================
 
-    def load_vlan_config_validation_data(self, report=None, final_plan=None, generated_config=None, base_network=None):
+    def load_vlan_config_validation_data(self, report=None, final_plan=None, generated_config=None, rendered_configs=None, base_network=None):
         """
         Reçoit les données depuis ConfigGenerationPage après génération Cisco.
         Cette méthode ouvre directement l'onglet VLAN/VLSM Validation et garde
@@ -1036,6 +1054,7 @@ class AIAnalysisPage(QWidget):
         self.app_state["vlsm_plan"] = vlsm_plan
         self.app_state["final_plan"] = final_plan
         self.app_state["generated_vlan_config"] = generated_config
+        self.app_state["rendered_configs"] = rendered_configs or {}
         self.app_state["base_network"] = base_network
 
         self.tabs.setCurrentIndex(2)
@@ -1155,6 +1174,7 @@ class AIAnalysisPage(QWidget):
         except Exception:
             return str(final_plan)
 
+
     def run_vlan_validation(self):
         report = self.get_current_report()
         vlan_plan = self.app_state.get("vlan_plan")
@@ -1181,30 +1201,13 @@ class AIAnalysisPage(QWidget):
             "vlsm_plan": vlsm_plan
         }
 
-        try:
-            self.status_label.setText("Validation VLAN/VLSM en cours...")
-
-            response = requests.post(f"{API_URL}/ai/validate", json=payload, timeout=120)
-
-            if response.status_code != 200:
-                QMessageBox.critical(self, "Erreur API", response.text)
-                self.status_label.setText("Agent Active")
-                return
-
-            data = response.json()
-            analysis = self.extract_analysis_payload(data)
-
-            if not analysis:
-                QMessageBox.warning(self, "Réponse AI vide", "Le backend a répondu, mais aucun bloc analysis VLAN/VLSM exploitable n'a été trouvé.")
-                self.status_label.setText("Agent Active")
-                return
-
-            self.display_vlan_analysis(analysis)
-            self.status_label.setText("Agent Active")
-
-        except Exception as e:
-            self.status_label.setText("Agent Active")
-            QMessageBox.critical(self, "Erreur", str(e))
+        self.start_api_post(
+            endpoint="/ai/validate",
+            payload=payload,
+            timeout=180,
+            status_text="Validation VLAN/VLSM en cours...",
+            success_callback=self.on_vlan_ai_success
+        )
 
     def display_vlan_analysis(self, analysis):
         issues = analysis.get("issues", [])
@@ -1389,6 +1392,7 @@ class AIAnalysisPage(QWidget):
             deploy_page.load_deploy_data(
                 final_plan=vlan_plan,
                 generated_config=generated_config,
+                rendered_configs=self.app_state.get("rendered_configs", {}),
                 report=report
             )
         else:
@@ -1413,6 +1417,97 @@ class AIAnalysisPage(QWidget):
                 pass
 
     
+
+    # ======================================================
+    # ASYNC API WORKERS
+    # ======================================================
+
+    def start_api_post(self, endpoint, payload, timeout, status_text, success_callback):
+        if not hasattr(self, "api_workers"):
+            self.api_workers = []
+
+        self.status_label.setText(status_text)
+
+        worker = APIRequestWorker(
+            method="POST",
+            url=f"{API_URL}{endpoint}",
+            payload=payload,
+            timeout=timeout
+        )
+
+        self.api_workers.append(worker)
+
+        worker.success.connect(success_callback)
+        worker.failed.connect(self.on_api_request_failed)
+        worker.finished.connect(lambda: self.cleanup_api_worker(worker))
+        worker.start()
+
+    def cleanup_api_worker(self, worker):
+        try:
+            if hasattr(self, "api_workers") and worker in self.api_workers:
+                self.api_workers.remove(worker)
+        except Exception:
+            pass
+
+    def on_api_request_failed(self, error_message):
+        self.status_label.setText("Agent Active")
+        QMessageBox.critical(self, "Erreur", str(error_message))
+
+    def on_global_ai_success(self, data):
+        analysis = self.extract_analysis_payload(data)
+
+        if not analysis:
+            QMessageBox.warning(
+                self,
+                "Réponse AI vide",
+                "Le backend a répondu, mais aucun bloc analysis exploitable n'a été trouvé."
+            )
+            self.status_label.setText("Agent Active")
+            return
+
+        self.display_analysis(analysis)
+        self.load_score_history()
+        self.status_label.setText("Agent Active")
+
+    def on_acl_ai_success(self, data):
+        analysis = self.extract_analysis_payload(data)
+
+        if not analysis:
+            QMessageBox.warning(
+                self,
+                "Réponse AI vide",
+                "Le backend a répondu, mais aucun bloc analysis ACL exploitable n'a été trouvé."
+            )
+            self.status_label.setText("Agent Active")
+            return
+
+        self.display_acl_analysis(analysis)
+        self.status_label.setText("Agent Active")
+
+    def on_vlan_ai_success(self, data):
+        analysis = self.extract_analysis_payload(data)
+
+        if not analysis:
+            QMessageBox.warning(
+                self,
+                "Réponse AI vide",
+                "Le backend a répondu, mais aucun bloc analysis VLAN/VLSM exploitable n'a été trouvé."
+            )
+            self.status_label.setText("Agent Active")
+            return
+
+        self.display_vlan_analysis(analysis)
+        self.status_label.setText("Agent Active")
+
+    def on_apply_fix_success(self, data):
+        self.status_label.setText("Agent Active")
+        QMessageBox.information(
+            self,
+            "Succès",
+            "Corrections appliquées avec succès sur le switch."
+        )
+
+
     # ======================================================
     # COMMON HELPERS
     # ======================================================
@@ -1548,32 +1643,13 @@ class AIAnalysisPage(QWidget):
 
         print("APPLY FIX PAYLOAD =", payload)
 
-        try:
-            response = requests.post(
-                f"{API_URL}/ai/apply-fix",
-                json=payload,
-                timeout=120
-            )
-
-            if response.status_code == 200:
-                QMessageBox.information(
-                    self,
-                    "Succès",
-                    "Corrections appliquées avec succès sur le switch."
-                )
-            else:
-                QMessageBox.critical(
-                    self,
-                    "Erreur API",
-                    response.text
-                )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Erreur",
-                str(e)
-            )
+        self.start_api_post(
+            endpoint="/ai/apply-fix",
+            payload=payload,
+            timeout=180,
+            status_text="Application des corrections en cours...",
+            success_callback=self.on_apply_fix_success
+        )
 
 
     def format_fixes_as_cli(self, fixes):

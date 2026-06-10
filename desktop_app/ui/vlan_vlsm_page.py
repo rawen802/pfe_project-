@@ -934,6 +934,7 @@ class VlanVlsmPage(QWidget):
     def generate_vlan(self):
         zone = self.zone_vlan_input.text().strip()
         vlan_name = self.vlan_name_input.text().strip()
+        selected_switch = self.switch_combo.currentText().strip()
 
         if not self.report_data:
             QMessageBox.warning(self, "Rapport manquant", "Charge d’abord un rapport depuis le module Découverte Réseau.")
@@ -943,8 +944,64 @@ class VlanVlsmPage(QWidget):
             QMessageBox.warning(self, "Champ manquant", "Veuillez entrer le nom de la zone.")
             return
 
+        if selected_switch == "Sélectionner" or not selected_switch:
+            QMessageBox.warning(
+                self,
+                "Switch manquant",
+                "Veuillez sélectionner le switch cible pour créer le VLAN."
+            )
+            return
+
         if not vlan_name:
             vlan_name = zone
+
+        def find_device_by_hostname(hostname):
+            devices = self.report_data.get("topology", {}).get("devices", [])
+            if not isinstance(devices, list):
+                devices = []
+
+            for dev in devices:
+                if not isinstance(dev, dict):
+                    continue
+
+                dev_hostname = dev.get("hostname") or dev.get("name")
+                if dev_hostname == hostname:
+                    return dev
+
+            return {
+                "hostname": hostname,
+                "role": "ACCESS_SWITCH",
+                "trunks": []
+            }
+
+        def find_core_switch():
+            devices = self.report_data.get("topology", {}).get("devices", [])
+            if not isinstance(devices, list):
+                devices = []
+
+            for dev in devices:
+                if not isinstance(dev, dict):
+                    continue
+
+                role = str(dev.get("role", "")).upper()
+                hostname = dev.get("hostname") or dev.get("name")
+
+                if role in ["SITE_CORE", "CORE", "CORE_SWITCH", "L3_SWITCH"] and hostname:
+                    return dev
+
+            for dev in devices:
+                if not isinstance(dev, dict):
+                    continue
+
+                hostname = dev.get("hostname") or dev.get("name")
+                if hostname and "CORE" in hostname.upper():
+                    return dev
+
+            return {
+                "hostname": "SW-CORE",
+                "role": "SITE_CORE",
+                "trunks": []
+            }
 
         payload = {
             "report": self.report_data,
@@ -952,10 +1009,18 @@ class VlanVlsmPage(QWidget):
                 {
                     "zone_name": zone,
                     "vlan_name": vlan_name,
-                    "required_hosts": 50
+                    "required_hosts": 50,
+                    "target_switch": selected_switch
                 }
             ]
         }
+
+        print("=== VLAN REQUEST PAYLOAD ===")
+        try:
+            print(json.dumps(payload, indent=2, ensure_ascii=False))
+        except Exception:
+            print(payload)
+        print("============================")
 
         result = self.api.generate_vlans(payload)
 
@@ -973,6 +1038,58 @@ class VlanVlsmPage(QWidget):
                 "Aucun VLAN créé. Vérifie si la zone existe déjà ou si le backend a retourné skipped/errors."
             )
             return
+
+        selected_device = find_device_by_hostname(selected_switch)
+        core_device = find_core_switch()
+
+        selected_role = selected_device.get("role") or "ACCESS_SWITCH"
+        core_role = core_device.get("role") or "SITE_CORE"
+        core_hostname = core_device.get("hostname") or core_device.get("name") or "SW-CORE"
+
+        # Correction locale importante : même si le backend retourne plusieurs switches,
+        # on force le résultat affiché et le plan final à respecter le switch choisi.
+        corrected_rows = []
+        for item in rows:
+            if not isinstance(item, dict):
+                continue
+
+            corrected = dict(item)
+
+            corrected["zone_name"] = corrected.get("zone_name") or corrected.get("zone") or zone
+            corrected["vlan_name"] = corrected.get("vlan_name") or corrected.get("name") or vlan_name
+            corrected["required_hosts"] = corrected.get("required_hosts") or 50
+
+            corrected["deploy_on"] = [
+                {
+                    "hostname": selected_switch,
+                    "role": selected_role,
+                    "trunks": selected_device.get("trunks", [])
+                }
+            ]
+
+            corrected["core_switches"] = [
+                {
+                    "hostname": core_hostname,
+                    "role": core_role,
+                    "trunks": core_device.get("trunks", [])
+                }
+            ]
+
+            corrected["target_switch"] = selected_switch
+            corrected["svi_device"] = core_hostname
+            corrected["needs_svi"] = True
+            corrected["needs_trunk_update"] = True
+
+            corrected_rows.append(corrected)
+
+        rows = corrected_rows
+
+        print("=== VLAN CORRECTED ROWS ===")
+        try:
+            print(json.dumps(rows, indent=2, ensure_ascii=False))
+        except Exception:
+            print(rows)
+        print("===========================")
 
         self.last_vlan_rows.extend(rows)
         self.update_report_after_vlan(rows)
@@ -1011,10 +1128,8 @@ class VlanVlsmPage(QWidget):
 
             if switches_list:
                 switches = ", ".join(switches_list)
-            elif core_list:
-                switches = ", ".join(core_list)
             else:
-                switches = "Aucun switch cible"
+                switches = selected_switch
 
             trunk = "Oui" if item.get("needs_trunk_update") else "Non"
             status = item.get("operation") or item.get("status") or item.get("statut") or "create"

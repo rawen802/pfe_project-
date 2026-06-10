@@ -648,6 +648,38 @@ def render_network_final_endpoint(
                 "device_count": len(rendered_configs)
             })
 
+        # Correction automatique : si une config contient des SVI,
+        # alors l'équipement doit être considéré comme SITE_CORE
+        # et doit contenir ip routing.
+        fixed_configs = {}
+
+        for hostname, config in rendered_configs.items():
+            if "interface Vlan" in config:
+                config = config.replace(
+                    "! ROLE: ACCESS_SWITCH",
+                    "! ROLE: SITE_CORE"
+                )
+
+                if "ip routing" not in config:
+                    marker = "! -------- VLAN CREATION --------"
+                    config = config.replace(
+                        marker,
+                        "! -------- INTER-VLAN ROUTING --------\n"
+                        "ip routing\n"
+                        "!\n\n"
+                        f"{marker}"
+                    )
+
+            if "switchport mode trunk" in config and "switchport trunk encapsulation dot1q" not in config:
+                config = config.replace(
+                    " switchport mode trunk",
+                    " switchport trunk encapsulation dot1q\n switchport mode trunk"
+                )
+
+            fixed_configs[hostname] = config
+
+        rendered_configs = fixed_configs
+
         response["rendered_configs"] = rendered_configs
 
         saved_files = save_network_configs_to_files(rendered_configs)
@@ -705,7 +737,6 @@ def render_network_final_endpoint(
         raise HTTPException(status_code=500, detail=str(e))
 
     return response
-
 
 @router.post("/render-acl")
 def render_acl_endpoint(

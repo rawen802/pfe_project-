@@ -227,7 +227,7 @@ class ApiClient:
     # NETWORK DISCOVERY
     # =========================
     def discover_network(self, payload):
-        return self.post("/network/site", payload, timeout=300)
+        return self.post("/network/site", payload, timeout=600)
 
     def get_latest_architecture_report(self):
         return self.get("/reports/last")

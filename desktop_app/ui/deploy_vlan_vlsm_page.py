@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -18,6 +19,7 @@ class DeployVlanVlsmPage(QWidget):
         self.report = {}
         self.final_plan = []
         self.generated_config = ""
+        self.rendered_configs = {}
         self.devices = []
 
         self.setup_ui()
@@ -328,9 +330,16 @@ class DeployVlanVlsmPage(QWidget):
 
         return card
 
-    def load_deploy_data(self, final_plan=None, generated_config=None, report=None):
+    def load_deploy_data(
+        self,
+        final_plan=None,
+        generated_config=None,
+        rendered_configs=None,
+        report=None
+    ):
         self.final_plan = final_plan or []
         self.generated_config = str(generated_config or "")
+        self.rendered_configs = rendered_configs or {}
         self.report = report or {}
 
         self.config_preview.setText(self.generated_config or "Aucune configuration chargée.")
@@ -339,50 +348,87 @@ class DeployVlanVlsmPage(QWidget):
         size = len(self.generated_config.encode("utf-8")) / 1024
         self.config_info.setText(f"Lignes : {lines}     Taille : {size:.1f} KB")
 
-        self.extract_devices_from_report()
+        self.extract_current_device_only()
         self.populate_devices_table()
 
-        self.add_log("INFO", "Configuration VLAN/VLSM chargée pour déploiement.")
-    
+        self.add_log("INFO", f"{len(self.devices)} équipement(s) chargé(s) pour déploiement.")
 
-
-
-    def extract_devices_from_report(self):
+    def extract_devices_from_configs(self):
         self.devices = []
 
         inventory_devices = self.report.get("inventory", {}).get("devices", [])
         topology_devices = self.report.get("topology", {}).get("devices", [])
+        all_devices = inventory_devices + topology_devices
 
-        source = inventory_devices if inventory_devices else topology_devices
+        if not self.rendered_configs:
+            self.add_log("WARNING", "Aucune configuration multi-équipement reçue.")
+            return
 
-        for d in source:
-            if not isinstance(d, dict):
-                continue
-
-            hostname = d.get("hostname") or d.get("name")
-            ip = d.get("ip") or d.get("ansible_host")
-
-            if not hostname:
-                continue
-
-            # Choix 1 : déploiement VLAN/VLSM uniquement sur le switch cœur.
-            # Le backend possède actuellement output/configs/SW-CORE.cfg.
-            if hostname != "SW-CORE":
-                continue
+        for hostname in self.rendered_configs.keys():
+            device_info = next(
+                (
+                    d for d in all_devices
+                    if isinstance(d, dict)
+                    and (
+                        d.get("hostname") == hostname
+                        or d.get("name") == hostname
+                    )
+                ),
+                {}
+            )
 
             self.devices.append({
                 "hostname": hostname,
-                "ip": ip or "",
-                "type": d.get("role") or d.get("type") or d.get("model") or "Switch",
-                "username": d.get("username", ""),
-                "password": d.get("password", ""),
-                "enable_password": d.get(
+                "ip": device_info.get("ip") or device_info.get("ansible_host") or "",
+                "type": device_info.get("role") or device_info.get("type") or device_info.get("model") or "Switch",
+                "username": device_info.get("username", ""),
+                "password": device_info.get("password", ""),
+                "enable_password": device_info.get(
                     "secret",
-                    d.get("enable_password", d.get("password", ""))
+                    device_info.get("enable_password", device_info.get("password", ""))
                 ),
                 "status": "En attente"
             })
 
+    def extract_current_device_only(self):
+        self.devices = []
+
+        hostname = "UNKNOWN"
+
+        for line in self.generated_config.splitlines():
+            line = line.strip()
+            if line.startswith("! DEVICE:"):
+                hostname = line.replace("! DEVICE:", "").strip()
+                break
+
+        inventory_devices = self.report.get("inventory", {}).get("devices", [])
+        topology_devices = self.report.get("topology", {}).get("devices", [])
+        all_devices = inventory_devices + topology_devices
+
+        device_info = next(
+            (
+                d for d in all_devices
+                if isinstance(d, dict)
+                and (
+                    d.get("hostname") == hostname
+                    or d.get("name") == hostname
+                )
+            ),
+            {}
+        )
+
+        self.devices.append({
+            "hostname": hostname,
+            "ip": device_info.get("ip") or device_info.get("ansible_host") or "",
+            "type": device_info.get("role") or device_info.get("type") or device_info.get("model") or "Switch",
+            "username": device_info.get("username", ""),
+            "password": device_info.get("password", ""),
+            "enable_password": device_info.get(
+                "secret",
+                device_info.get("enable_password", device_info.get("password", ""))
+            ),
+            "status": "En attente"
+        })
 
     def populate_devices_table(self):
         self.devices_table.blockSignals(True)
@@ -415,7 +461,7 @@ class DeployVlanVlsmPage(QWidget):
 
         self.selected_label.setText(f"{selected} équipement(s) sélectionné(s)")
         self.stat_devices.findChildren(QLabel)[1].setText(str(selected))
-        self.stat_configs.findChildren(QLabel)[1].setText("1" if self.generated_config else "0")
+        self.stat_configs.findChildren(QLabel)[1].setText(str(selected) if self.generated_config else "0")
 
     def get_selected_devices(self):
         selected = []
