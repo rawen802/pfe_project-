@@ -1,0 +1,45 @@
+! =========================================
+! DEVICE: {{ data.hostname }}
+! ROLE: {{ data.role }}
+! =========================================
+
+{% if data.enable_ip_routing %}
+! -------- ENABLE INTER-VLAN ROUTING --------
+ip routing
+
+{% endif %}
+
+! -------- VLAN CREATION --------
+{% for vlan in data.vlans %}
+vlan {{ vlan.vlan_id }}
+ name {{ vlan.vlan_name }}
+!
+{% endfor %}
+
+! -------- TRUNK CONFIG --------
+{% for trunk in data.trunks %}
+interface {{ trunk.interface }}
+ description Auto trunk
+{% if data.trunk_encapsulation_dot1q %}
+ switchport trunk encapsulation dot1q
+{% endif %}
+ switchport mode trunk
+ switchport trunk allowed vlan add {{ trunk.vlan_ids | join(",") }}
+ no shutdown
+!
+{% endfor %}
+
+! -------- SVI / GATEWAY CONFIG --------
+{% for svi in data.svis %}
+interface Vlan{{ svi.vlan_id }}
+ description Gateway for {{ svi.zone_name }}
+ ip address {{ svi.interface_ip }} {{ svi.mask }}
+ no shutdown
+!
+{% endfor %}
+
+{% if data.default_gateway %}
+! -------- DEFAULT GATEWAY FOR L2 SWITCH --------
+ip default-gateway {{ data.default_gateway }}
+!
+{% endif %}

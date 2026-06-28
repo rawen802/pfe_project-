@@ -1,0 +1,42 @@
+! =========================================
+! DEVICE: {{ hostname }}
+! =========================================
+
+! -------- ACL CREATE --------
+{% for acl in data.created %}
+ip access-list extended {{ acl.acl_name }}
+{% for rule in acl.rules %}
+ {{ rule.action }} {{ rule.protocol }} {{ rule.source_network }} {{ rule.source_wildcard }} {{ rule.destination_network }} {{ rule.destination_wildcard }}{% if rule.port %} eq {{ rule.port }}{% endif %}
+
+{% endfor %}
+!
+{% if acl.apply_interface and acl.apply_direction %}
+interface {{ acl.apply_interface }}
+ ip access-group {{ acl.acl_name }} {{ acl.apply_direction }}
+!
+{% endif %}
+
+{% endfor %}
+
+! -------- ACL UPDATE --------
+{% for acl in data.updated %}
+no ip access-list extended {{ acl.acl_name }}
+ip access-list extended {{ acl.acl_name }}
+{% for rule in acl.new_rules %}
+ {{ rule.action }} {{ rule.protocol }} {{ rule.source_network }} {{ rule.source_wildcard }} {{ rule.destination_network }} {{ rule.destination_wildcard }}{% if rule.port %} eq {{ rule.port }}{% endif %}
+
+{% endfor %}
+!
+{% if acl.apply_interface and acl.apply_direction %}
+interface {{ acl.apply_interface }}
+ ip access-group {{ acl.acl_name }} {{ acl.apply_direction }}
+!
+{% endif %}
+
+{% endfor %}
+
+! -------- ACL DELETE --------
+{% for acl in data.deleted %}
+no ip access-list extended {{ acl.acl_name }}
+!
+{% endfor %}

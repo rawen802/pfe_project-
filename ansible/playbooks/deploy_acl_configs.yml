@@ -1,0 +1,70 @@
+---
+- name: Deploy dynamic ACL config to Cisco IOS devices
+  hosts: all
+  gather_facts: no
+  connection: ansible.netcommon.network_cli
+
+  vars:
+    ansible_network_os: cisco.ios.ios
+    ansible_command_timeout: 180
+    ansible_connect_timeout: 60
+    acl_file: "../../output/acl_configs/{{ inventory_hostname }}_acl.cfg"
+
+  tasks:
+    - name: Read ACL config file
+      set_fact:
+        acl_lines: "{{ lookup('file', acl_file).splitlines() }}"
+
+    - name: Extract ACL parent
+      set_fact:
+        acl_parent: "{{ item | trim }}"
+      loop: "{{ acl_lines }}"
+      when: item | trim is match('^ip access-list extended .*')
+
+    - name: Extract ACL rules
+      set_fact:
+        acl_rules: "{{ acl_rules | default([]) + [item | trim] }}"
+      loop: "{{ acl_lines }}"
+      when: item | trim is match('^(permit|deny) .*')
+
+    - name: Extract interface parent
+      set_fact:
+        interface_parent: "{{ item | trim }}"
+      loop: "{{ acl_lines }}"
+      when: item | trim is match('^interface .*')
+
+    - name: Extract interface ACL lines
+      set_fact:
+        interface_lines: "{{ interface_lines | default([]) + [item | trim] }}"
+      loop: "{{ acl_lines }}"
+      when: item | trim is match('^ip access-group .*')
+
+    - name: Validate ACL content
+      fail:
+        msg: "ACL file invalid for {{ inventory_hostname }}. Missing acl_parent or acl_rules."
+      when: acl_parent is not defined or acl_rules is not defined or acl_rules | length == 0
+
+    - name: Add safe management rules
+      set_fact:
+        acl_rules: >-
+          {{
+            [
+              'permit tcp host 192.168.99.100 any eq 22',
+              'permit icmp host 192.168.99.100 any'
+            ] + acl_rules
+          }}
+
+    - name: Configure ACL dynamically
+      cisco.ios.ios_config:
+        parents:
+          - "{{ acl_parent }}"
+        lines: "{{ acl_rules }}"
+        save_when: never
+
+    - name: Apply ACL to interface dynamically
+      cisco.ios.ios_config:
+        parents:
+          - "{{ interface_parent }}"
+        lines: "{{ interface_lines }}"
+        save_when: modified
+      when: interface_parent is defined and interface_lines is defined and interface_lines | length > 0

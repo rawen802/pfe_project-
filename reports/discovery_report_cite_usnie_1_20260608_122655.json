@@ -1,0 +1,234 @@
+{
+  "site": {
+    "site_name": "cite usnie 1",
+    "core_device": {
+      "hostname": "SW-CORE",
+      "ip": "192.168.99.22",
+      "model": "",
+      "role": "SITE_CORE",
+      "username": "admin",
+      "password": "admin123",
+      "secret": "admin123"
+    }
+  },
+  "summary": {
+    "device_count": 1,
+    "switch_count": 1,
+    "router_count": 0,
+    "firewall_count": 0,
+    "zone_count": 0,
+    "vlan_count": 0,
+    "subnet_count": 0,
+    "acl_candidate_count": 0,
+    "acl_count": 0,
+    "trunk_count": 0,
+    "acl_application_count": 0
+  },
+  "topology": {
+    "devices": [
+      {
+        "hostname": "SW-CORE",
+        "ip": "192.168.99.22",
+        "role": "SITE_CORE",
+        "model": "",
+        "reachable": false,
+        "routing": false,
+        "trunks": [],
+        "vlans": [],
+        "svis": [],
+        "acl_applications": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123"
+      }
+    ],
+    "links": []
+  },
+  "inventory": {
+    "devices": [
+      {
+        "ip": "192.168.99.22",
+        "hostname": "SW-CORE",
+        "model": "",
+        "vendor": "",
+        "os_version": "",
+        "serial_number": "",
+        "uptime": 0,
+        "interfaces": {},
+        "neighbors": [],
+        "vlans": [],
+        "trunks": [],
+        "svis": [],
+        "routing": false,
+        "existing_acls": [],
+        "acl_applications": [],
+        "username": "admin",
+        "password": "admin123",
+        "secret": "admin123",
+        "reachable": false,
+        "error": "Cannot connect to 192.168.99.22",
+        "role": "SITE_CORE"
+      }
+    ]
+  },
+  "network_context": {
+    "vlans": [],
+    "subnets": [],
+    "zones": [],
+    "routing_devices": [],
+    "firewalls": [],
+    "acl_points": [],
+    "acls": [],
+    "acl_applications": [
+      {
+        "device": "SW-CORE",
+        "applications": []
+      }
+    ],
+    "acl_application_count": 0,
+    "trunks": [],
+    "trunk_count": 0,
+    "trunk_interfaces": []
+  },
+  "ai_context": {
+    "full_report": {
+      "site": {
+        "site_name": "cite usnie 1",
+        "core_device": {
+          "hostname": "SW-CORE",
+          "ip": "192.168.99.22",
+          "model": "",
+          "role": "SITE_CORE",
+          "username": "admin",
+          "password": "admin123",
+          "secret": "admin123"
+        }
+      },
+      "summary": {
+        "device_count": 1,
+        "switch_count": 1,
+        "router_count": 0,
+        "firewall_count": 0,
+        "zone_count": 0,
+        "vlan_count": 0,
+        "subnet_count": 0,
+        "acl_candidate_count": 0,
+        "acl_count": 0,
+        "trunk_count": 0,
+        "acl_application_count": 0
+      },
+      "topology": {
+        "devices": [
+          {
+            "hostname": "SW-CORE",
+            "ip": "192.168.99.22",
+            "role": "SITE_CORE",
+            "model": "",
+            "reachable": false,
+            "routing": false,
+            "trunks": [],
+            "vlans": [],
+            "svis": [],
+            "acl_applications": [],
+            "username": "admin",
+            "password": "admin123",
+            "secret": "admin123"
+          }
+        ],
+        "links": []
+      },
+      "inventory": {
+        "devices": [
+          {
+            "ip": "192.168.99.22",
+            "hostname": "SW-CORE",
+            "model": "",
+            "vendor": "",
+            "os_version": "",
+            "serial_number": "",
+            "uptime": 0,
+            "interfaces": {},
+            "neighbors": [],
+            "vlans": [],
+            "trunks": [],
+            "svis": [],
+            "routing": false,
+            "existing_acls": [],
+            "acl_applications": [],
+            "username": "admin",
+            "password": "admin123",
+            "secret": "admin123",
+            "reachable": false,
+            "error": "Cannot connect to 192.168.99.22",
+            "role": "SITE_CORE"
+          }
+        ]
+      },
+      "network_context": {
+        "vlans": [],
+        "subnets": [],
+        "zones": [],
+        "routing_devices": [],
+        "firewalls": [],
+        "acl_points": [],
+        "acls": [],
+        "acl_applications": [
+          {
+            "device": "SW-CORE",
+            "applications": []
+          }
+        ],
+        "acl_application_count": 0,
+        "trunks": [],
+        "trunk_count": 0,
+        "trunk_interfaces": []
+      }
+    },
+    "topology_health_inputs": {
+      "device_count": 1,
+      "link_count": 0,
+      "trunk_count": 0,
+      "trunk_discovery_complete": false,
+      "trunks": [],
+      "trunk_interfaces": [],
+      "zone_count": 0,
+      "routing_device_count": 0,
+      "firewall_present": false,
+      "acl_candidate_count": 0
+    },
+    "consistency_inputs": {
+      "zones_without_gateway": [],
+      "vlans_without_subnet": [],
+      "subnets_without_zone": [],
+      "isolated_devices": [
+        {
+          "hostname": "SW-CORE",
+          "ip": "192.168.99.22",
+          "role": "SITE_CORE",
+          "model": "",
+          "reachable": false,
+          "routing": false,
+          "trunks": [],
+          "vlans": [],
+          "svis": [],
+          "acl_applications": [],
+          "username": "admin",
+          "password": "admin123",
+          "secret": "admin123"
+        }
+      ]
+    },
+    "security_inputs": {
+      "existing_acl_count": 0,
+      "firewall_count": 0,
+      "inter_vlan_routing": false,
+      "acl_applications": [
+        {
+          "device": "SW-CORE",
+          "applications": []
+        }
+      ],
+      "acl_application_count": 0
+    }
+  }
+}
